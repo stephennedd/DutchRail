@@ -1,25 +1,24 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import utils.ReadCsvFile;
+
+
 import java.util.ArrayList;
 
 
 public class Station {
-    private String id;
-    private String code;
-    private String shortCode;
-    private String nameShort;
-    private String nameMedium;
-    private String nameLong;
-    private String slug;
-    private String countryCode;
-    private String type;
-    private String latitude;
-    private String longitude;
+    private final String id;
+    private final String code;
+    private final String shortCode;
+    private final String nameShort;
+    private final String nameMedium;
+    private final String nameLong;
+    private final String slug;
+    private final String countryCode;
+    private final String type;
+    private final String latitude;
+    private final String longitude;
 
-    public Station () {}
 
     public Station(String id, String code, String shortCode, String nameShort, String nameMedium, String nameLong, String slug, String countryCode, String type, String latitude, String longitude) {
         assert id != null;
@@ -47,48 +46,8 @@ public class Station {
         this.longitude = longitude;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getShortCode() {
-        return shortCode;
-    }
-
-    public String getNameShort() {
-        return nameShort;
-    }
-
-    public String getNameMedium() {
-        return nameMedium;
-    }
-
     public String getNameLong() {
         return nameLong;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
     }
 
     @Override
@@ -108,17 +67,13 @@ public class Station {
                 '}';
     }
 
-    public static ArrayList<Station> readStations(String filename) throws IOException {
+    public static ArrayList<Station> readStations(String filename) {
         ArrayList<Station> stations = new ArrayList<>();
+        ReadCsvFile reader = new ReadCsvFile(filename);
+        ArrayList<String> data = reader.read();
 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
-            String line = reader.readLine();
-
-            // skip header line
-            line = reader.readLine();
-
-            while (line != null) {
+        if (!data.isEmpty()) {
+            for (String line : data) {
                 String[] parts = line.split(",");
                 Station station = new Station(
                         parts[0],
@@ -134,17 +89,19 @@ public class Station {
                         parts[10]
                 );
                 stations.add(station);
-                line = reader.readLine();
             }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return stations;
+            return stations;
+        } else {
+            return null;
+        }
     }
 
     public static ArrayList<String> getStationNames(ArrayList<Station> stations) {
+        // preconditions: stations is not null and not empty
+        assert stations != null : "stations is null";
+        assert !stations.isEmpty() : "stations is empty";
+
         ArrayList<String> stationNames = new ArrayList<>();
         for (Station station : stations) {
             stationNames.add(station.getNameLong());

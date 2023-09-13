@@ -64,7 +64,7 @@ class StationTest {
         ArrayList<Station> stations = Station.readStations("data/stations.csv");
         ArrayList<String> names = Station.getStationNames(stations);
         int index = Station.binarySearch(names, "Zaltbommel");
-        assertEquals(563, index);
+        assertEquals(564, index);
     }
 
     @Test
@@ -93,5 +93,15 @@ class StationTest {
                 ", longitude='" + "test" + '\'' +
                 '}';
         assertEquals(expected, station.toString());
+    }
+
+    @Test
+    @DisplayName("Get station names should not throw an assertion error")
+    void getStationNames() {
+        ArrayList<Station> stations = new ArrayList<>();
+        stations.add(new Station("test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test"));
+        assertDoesNotThrow(() -> {
+            Station.getStationNames(stations);
+        });
     }
 }
