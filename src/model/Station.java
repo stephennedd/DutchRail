@@ -1,9 +1,7 @@
 package model;
 
-import utils.ReadCsvFile;
-
-
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Station {
@@ -49,6 +47,17 @@ public class Station {
     public String getNameLong() {
         return nameLong;
     }
+    public String getNameShort() {
+        return nameShort;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
 
     @Override
     public String toString() {
@@ -67,79 +76,81 @@ public class Station {
                 '}';
     }
 
-    public static ArrayList<Station> readStations(String filename) {
-        ArrayList<Station> stations = new ArrayList<>();
-        ReadCsvFile reader = new ReadCsvFile(filename);
-        ArrayList<String> data = reader.read();
 
-        if (!data.isEmpty()) {
-            for (String line : data) {
-                String[] parts = line.split(",");
-                Station station = new Station(
-                        parts[0],
-                        parts[1],
-                        parts[2],
-                        parts[3],
-                        parts[4],
-                        parts[5],
-                        parts[6],
-                        parts[7],
-                        parts[8],
-                        parts[9],
-                        parts[10]
-                );
-                stations.add(station);
-            }
-
-            return stations;
-        } else {
-            return null;
-        }
-    }
-
-    public static ArrayList<String> getStationNames(ArrayList<Station> stations) {
+    // Get the station names from the stations. complexity is 0(n)
+    public static List<String> getStationNames(List<Station> stations) {
         // preconditions: stations is not null and not empty
         assert stations != null : "stations is null";
         assert !stations.isEmpty() : "stations is empty";
 
         ArrayList<String> stationNames = new ArrayList<>();
-        for (Station station : stations) {
-            stationNames.add(station.getNameLong());
+        // Loop through the stations and add the station names to the stationNames ArrayList start at 1 to skip the header
+        for (int i = 1; i < stations.size(); i++) {
+            stationNames.add(stations.get(i).getNameShort());
         }
 
         // Sort the station names alphabetically
-        //stationNames.sort(String::compareToIgnoreCase);
-
         return stationNames;
     }
 
-    // Binary search of station names
-    public static int binarySearch(ArrayList<String> stationNames, String searchName) {
-        // preconditions: searchName is not null and stationNames is sorted alphabetically
-        assert searchName != null : "searchName is null";
-        assert stationNames != null : "stationNames is null";
-        assert !stationNames.isEmpty() : "stationNames is empty";
+    // linear search stations by name. this is an 0(n) algorithm
+    public static Station linearSearchByNameShort(List<Station> stations, String searchedStation) {
+        System.out.println("Linear search for: " + searchedStation);
+        // preconditions: stations is not null and not empty
+        assert stations != null : "stations is null";
+        assert !stations.isEmpty() : "stations is empty";
+        assert searchedStation != null : "searchedStation is null";
 
-        int low = 0;
-        int high = stationNames.size() - 1;
-        int mid;
+        long startTime = System.nanoTime();
 
-        // Loop until the searchName is found or the searchName is not found
-        while (low <= high) {
-            mid = (low + high) / 2;
-            // Compare the searchName with the middle element
-            if (stationNames.get(mid).compareToIgnoreCase(searchName) < 0) {
-                // searchName is in the upper half
-                low = mid + 1;
-            } else if (stationNames.get(mid).compareToIgnoreCase(searchName) > 0) {
-                // searchName is in the lower half
-                high = mid - 1;
-            } else {
-                // searchName is found
-                return mid;
+        for(Station station: stations) {
+            if(station.getNameShort().equals(searchedStation)) {
+                long endTime = System.nanoTime();
+                System.out.println("Execution time linear search in nanoseconds: " + (endTime - startTime));
+                System.out.println("Found station at index " + stations.indexOf(station) + ".");
+                return station; // station found
             }
         }
-        // searchName is not found
-        return -1;
+
+        long endTime = System.nanoTime();
+        System.out.println("Execution time linear search in nanoseconds: " + (endTime - startTime));
+        System.out.println("Station not found");
+        return null; // station not found
+    }
+
+    // binary search stations by name. this is an 0(log n) algorithm
+    public static Station binarySearchByNameShort(List<Station> stations, String searchedName) {
+        System.out.println("Binary search for: " + searchedName);
+        // preconditions: searchName is not null and stationNames is sorted alphabetically
+        assert searchedName != null : "searchName is null";
+        assert stations != null : "stationNames is null";
+        assert !stations.isEmpty() : "stationNames is empty";
+        assert stations.get(0).getNameLong().compareToIgnoreCase(stations.get(stations.size() - 1).getNameLong()) < 0 : "stationNames is not sorted alphabetically";
+
+        int left = 0;
+        int right = stations.size() - 1;
+
+        long startTime = System.nanoTime();
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            Station midStation = stations.get(mid);
+
+            int comparison = searchedName.compareTo(midStation.getNameShort());
+
+            if (comparison == 0) {
+                long endTime = System.nanoTime();
+                System.out.println("Execution time binary search in nanoseconds: " + (endTime - startTime));
+                System.out.println("Found station at index " + mid + ".");
+                return midStation; // Found the station
+            } else if (comparison < 0) {
+                right = mid - 1; // Search in the left half
+            } else {
+                left = mid + 1; // Search in the right half
+            }
+        }
+        long endTime = System.nanoTime();
+        System.out.println("Execution time binary search in nanoseconds: " + (endTime - startTime));
+        System.out.println("Station not found");
+        return null; // Station not found
     }
 }
