@@ -25,6 +25,8 @@ public class ReadCsvFile {
             BufferedReader reader = new BufferedReader(new FileReader(this.path));
             String line;
             while ((line = reader.readLine()) != null) {
+                // check the line matches the regex
+
                 data.add(line);
             }
             reader.close();

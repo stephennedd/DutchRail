@@ -32,4 +32,10 @@ public class RegexFilter {
         reader.close();
         return count;
     }
+
+    public static void main(String[] args) {
+        // example line from stations.csv:
+        // 269,HTO,8400320,"Dn Bosch O","'s-Hertogenb. O.","'s-Hertogenbosch Oost",s-hertogenbosch-oost,NL,stoptreinstation,51.700553894043,5.3183331489563
+
+    }
 }
