@@ -1,6 +1,5 @@
-package test;
+package model;
 
-import model.Station;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.ReadCsvFile;
@@ -37,7 +36,7 @@ class StationTest {
     @DisplayName("Binary search should throw an assertion error when the list is null")
     void binarySearchNullList() {
         AssertionError e = assertThrows(AssertionError.class, () -> {
-            Station.binarySearchByNameShort(null, "test");
+            Station.binarySearchByNameShort(null, "model");
         });
 
         // assert the error message is correct
@@ -48,7 +47,7 @@ class StationTest {
     @DisplayName("Binary search should throw an assertion error when the list is empty")
     void binarySearchEmptyList() {
         AssertionError e = assertThrows(AssertionError.class, () -> {
-            Station.binarySearchByNameShort(new ArrayList<>(), "test");
+            Station.binarySearchByNameShort(new ArrayList<>(), "model");
         });
 
         // assert the error message is correct
@@ -60,7 +59,7 @@ class StationTest {
     void binarySearchNotFound() {
         List<Station> stations = ReadCsvFile.readStations("data/stations.csv");
         stations = ReadCsvFile.sortListByNameLong(stations);
-        Station station = Station.binarySearchByNameShort(stations, "test");
+        Station station = Station.binarySearchByNameShort(stations, "model");
         assertNull(station);
     }
 
@@ -106,7 +105,7 @@ class StationTest {
     @DisplayName("Linear search should throw an assertion error when the list is null")
     void linearSearchNullList() {
         AssertionError e = assertThrows(AssertionError.class, () -> {
-            Station.linearSearchByNameShort(null, "test");
+            Station.linearSearchByNameShort(null, "model");
         });
 
         // assert the error message is correct
@@ -117,7 +116,7 @@ class StationTest {
     @DisplayName("Linear search should throw an assertion error when the list is empty")
     void linearSearchEmptyList() {
         AssertionError e = assertThrows(AssertionError.class, () -> {
-            Station.linearSearchByNameShort(new ArrayList<>(), "test");
+            Station.linearSearchByNameShort(new ArrayList<>(), "model");
         });
 
         // assert the error message is correct
@@ -151,19 +150,19 @@ class StationTest {
     @Test
     @DisplayName("The to string method should return the correct string")
     void testToString() {
-        Station station = new Station("test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test");
+        Station station = new Station("model", "model", "model", "model", "model", "model", "model", "model", "model", "model", "model");
         String expected = "Station{" +
-                "id='" + "test" + '\'' +
-                ", code='" + "test" + '\'' +
-                ", shortCode='" + "test" + '\'' +
-                ", nameShort='" + "test" + '\'' +
-                ", nameMedium='" + "test" + '\'' +
-                ", nameLong='" + "test" + '\'' +
-                ", slug='" + "test" + '\'' +
-                ", countryCode='" + "test" + '\'' +
-                ", type='" + "test" + '\'' +
-                ", latitude='" + "test" + '\'' +
-                ", longitude='" + "test" + '\'' +
+                "id='" + "model" + '\'' +
+                ", code='" + "model" + '\'' +
+                ", shortCode='" + "model" + '\'' +
+                ", nameShort='" + "model" + '\'' +
+                ", nameMedium='" + "model" + '\'' +
+                ", nameLong='" + "model" + '\'' +
+                ", slug='" + "model" + '\'' +
+                ", countryCode='" + "model" + '\'' +
+                ", type='" + "model" + '\'' +
+                ", latitude='" + "model" + '\'' +
+                ", longitude='" + "model" + '\'' +
                 '}';
         assertEquals(expected, station.toString());
     }
@@ -172,9 +171,28 @@ class StationTest {
     @DisplayName("Get station names should not throw an assertion error")
     void getStationNames() {
         ArrayList<Station> stations = new ArrayList<>();
-        stations.add(new Station("test", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test"));
+        stations.add(new Station("model", "model", "model", "model", "model", "model", "model", "model", "model", "model", "model"));
         assertDoesNotThrow(() -> {
             Station.getStationNames(stations);
         });
     }
+
+    @Test
+    void getCode() {
+        Station station = new Station("01", "ABC", "AB", "A", "B", "C", "D", "E", "F", "G", "H");
+        assertEquals("ABC", station.getCode());
+    }
+
+    @Test
+    void getLongitude() {
+        Station station = new Station("01", "ABC", "AB", "A", "B", "C", "D", "E", "F", "G", "H");
+        assertEquals("H", station.getLongitude());
+    }
+
+    @Test
+    void getLatitude() {
+        Station station = new Station("01", "ABC", "AB", "A", "B", "C", "D", "E", "F", "G", "H");
+        assertEquals("G", station.getLatitude());
+    }
+
 }

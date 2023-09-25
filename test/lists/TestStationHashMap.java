@@ -1,6 +1,5 @@
-package test;
+package lists;
 
-import lists.StationHashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +23,7 @@ public class TestStationHashMap
         StationHashMap map = new StationHashMap();
         assertTrue(map.isEmpty());
         assertEquals(0, map.getCount());
-        assertFalse(map.containsKey("test"));
+        assertFalse(map.containsKey("model"));
         //assertNull(map.remove("test"));
     }
 }
