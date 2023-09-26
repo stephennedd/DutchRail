@@ -108,7 +108,7 @@ public class StationHashMap {
         return null;
     }
 
-    // remap the entries to a new map with a larger size
+    // remap the entries to a new map with a larger size when the load factor is reached
     public void remap() {
         // create a new map with a larger size
         ArrayList<StationEntry>[] newMap = new ArrayList[map.length * 2];
