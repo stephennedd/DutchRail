@@ -1,24 +1,20 @@
 package trees;
 
 public class BinaryTreeNode<T> {
-    private T value;
+    private T data;
     private BinaryTreeNode<T> left;
     private BinaryTreeNode<T> right;
 
-    public BinaryTreeNode(T value) {
-        this.value = value;
+    public BinaryTreeNode(T data) {
+        this.data = data;
         this.left = null;
         this.right = null;
     }
 
-    public BinaryTreeNode(T value, BinaryTreeNode<T> left, BinaryTreeNode<T> right) {
-        this.value = value;
+    public BinaryTreeNode(T data, BinaryTreeNode<T> left, BinaryTreeNode<T> right) {
+        this.data = data;
         this.left = left;
         this.right = right;
-    }
-
-    public boolean isLeaf() {
-        return this.left == null && this.right == null;
     }
 
     public boolean hasLeft() {
@@ -29,8 +25,8 @@ public class BinaryTreeNode<T> {
         return this.right != null;
     }
 
-    public T getValue() {
-        return this.value;
+    public T getData() {
+        return this.data;
     }
 
     public BinaryTreeNode<T> getLeft() {
@@ -41,8 +37,8 @@ public class BinaryTreeNode<T> {
         return this.right;
     }
 
-    public void setValue(T value) {
-        this.value = value;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public void setLeft(BinaryTreeNode<T> left) {

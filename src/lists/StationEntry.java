@@ -4,7 +4,7 @@ import model.Station;
 
 public class StationEntry {
     private final String code;
-    private final Station station;
+    private Station station;
     private boolean deleted;
 
     public StationEntry(Station station) {
@@ -27,6 +27,10 @@ public class StationEntry {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public void setValue(Station station) {
+        this.station = station;
     }
 
 
