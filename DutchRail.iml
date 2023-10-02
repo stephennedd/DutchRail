@@ -9,6 +9,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="junit.jupiter" level="project" />
+    <orderEntry type="library" name="apache.commons.csv" level="project" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="b56e4d1d-bc28-4322-90d5-80c713d029c4" />

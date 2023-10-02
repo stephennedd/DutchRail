@@ -8,6 +8,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
 
 public class ReadCsvFile {
     private String path;
@@ -61,6 +68,7 @@ public class ReadCsvFile {
 
         for (String line : data) {
             String[] parts = line.split(",");
+
             Station station = new Station(
                     parts[0],
                     parts[1],
@@ -78,6 +86,44 @@ public class ReadCsvFile {
         }
         return stations;
     }
+
+    public static List<Station> readStationsWithValidation(String filename) {
+        // preconditions: filename is not null
+        assert filename != null : "filename is null";
+        List<Station> dataEntries = new ArrayList<>();
+
+        try (FileReader fileReader = new FileReader(filename);
+             CSVParser csvParser = CSVFormat.DEFAULT
+                     .withFirstRecordAsHeader() // Assuming the first row is the header
+                     .parse(fileReader)) {
+
+            for (CSVRecord record : csvParser) {
+                String id = record.get("id");
+                String code = record.get("code");
+                String uic = record.get("uic");
+                String nameShort = record.get("name_short");
+                String nameMedium = record.get("name_medium");
+                String nameLong = record.get("name_long");
+                String slug = record.get("slug");
+                String country = record.get("country");
+                String type = record.get("type");
+                String geoLat = record.get("geo_lat");
+                String geoLng = record.get("geo_lng");
+
+                // Create an instance of YourDataClass and populate it with the parsed data
+                Station dataEntry = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type, geoLat, geoLng);
+
+                dataEntries.add(dataEntry);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return dataEntries;
+    }
+
+
 
     // sort the station names alphabetically. complexity is 0(n^2)
     public static List<Station> sortListByNameLong(List<Station> stations) {

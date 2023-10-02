@@ -3,18 +3,18 @@ package lists;
 import model.Station;
 
 public class StationEntry {
-    private final String code;
+    private final String key;
     private Station station;
     private boolean deleted;
 
-    public StationEntry(Station station) {
-        this.code = station.getCode();
+    public StationEntry(String key, Station station) {
+        this.key = key;
         this.station = station;
         this.deleted = false;
     }
 
     public String getKey() {
-        return code;
+        return key;
     }
 
     public Station getValue() {
@@ -33,5 +33,8 @@ public class StationEntry {
         this.station = station;
     }
 
+    public boolean areEquals(String other) {
+        return this.key.equals(other);
+    }
 
 }

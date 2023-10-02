@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.ReadCsvFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,19 +19,21 @@ public class TestStationHashMap
     }
 
     @Test
-    public void testStationHashMap() {
-        List<Station> stations = ReadCsvFile.readStations("data/stations.csv");
+    public void testGetIndexReturnsCorrectValue() {
+
+    }
+
+    @Test
+    public void testStationHashMap() throws IOException {
+        List<Station> stations = ReadCsvFile.readStationsWithValidation("data/stations.csv");
         StationHashMap testMap = new StationHashMap();
 
-//        for (Station station : stations) {
-//            testMap.put(station.getCode(), station);
-//        }
+        for (Station station : stations) {
+            testMap.put(station);
+        }
 
-        testMap.put(stations.get(2).getCode(),stations.get(2));
-        testMap.put(stations.get(3).getCode(),stations.get(3));
-        System.out.println("Size: " + testMap.getCount());
-        System.out.println("Value: " + testMap.get(stations.get(2).getCode()));
-        System.out.println("Value: " + testMap.get(stations.get(3).getCode()));
+        assert testMap.getCount() == 578;
+        System.out.println("Value: " + testMap.get("HT"));
     }
 
     @Test
