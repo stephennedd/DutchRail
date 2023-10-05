@@ -5,25 +5,22 @@ public class BinaryTreeNode<T> {
     private BinaryTreeNode<T> left;
     private BinaryTreeNode<T> right;
 
+    private  BinaryTreeNode<T> parent;
+
     public BinaryTreeNode(T data) {
         this.data = data;
         this.left = null;
         this.right = null;
+        this.parent = null;
     }
 
-    public BinaryTreeNode(T data, BinaryTreeNode<T> left, BinaryTreeNode<T> right) {
+    public BinaryTreeNode(T data, BinaryTreeNode<T> left, BinaryTreeNode<T> right, BinaryTreeNode<T> parent) {
         this.data = data;
         this.left = left;
         this.right = right;
+        this.parent = parent;
     }
 
-    public boolean hasLeft() {
-        return this.left != null;
-    }
-
-    public boolean hasRight() {
-        return this.right != null;
-    }
 
     public T getData() {
         return this.data;
@@ -48,4 +45,46 @@ public class BinaryTreeNode<T> {
     public void setRight(BinaryTreeNode<T> right) {
         this.right = right;
     }
+
+    public boolean hasLeft() {
+        return this.left != null;
+    }
+
+    public boolean hasRight() {
+        return this.right != null;
+    }
+
+    public boolean isLeaf() {
+        return !hasLeft() && !hasRight();
+    }
+
+    public int getHeight() {
+        return getHeightRecursive(this);
+    }
+
+    private int getHeightRecursive(BinaryTreeNode<T> current) {
+        if (current == null) {
+            return 0;
+        }
+
+        return 1 + Math.max(getHeightRecursive(current.getLeft()), getHeightRecursive(current.getRight()));
+    }
+
+    // balance node by rotating left
+    public BinaryTreeNode<T> rotateLeft() {
+        BinaryTreeNode<T> newRoot = this.right;
+        this.right = newRoot.getLeft();
+        newRoot.setLeft(this);
+        return newRoot;
+    }
+
+    // balance node by rotating right
+    public BinaryTreeNode<T> rotateRight() {
+        BinaryTreeNode<T> newRoot = this.left;
+        this.left = newRoot.getRight();
+        newRoot.setRight(this);
+        return newRoot;
+    }
+
+
 }

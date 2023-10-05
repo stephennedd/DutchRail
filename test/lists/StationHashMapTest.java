@@ -8,9 +8,7 @@ import utils.ReadCsvFile;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class TestStationHashMap
+public class StationHashMapTest
 {
 
     @BeforeEach

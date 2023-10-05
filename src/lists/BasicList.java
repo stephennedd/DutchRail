@@ -2,9 +2,11 @@ package lists;
 
 public interface BasicList<T> {
 
+    public void add(T value);
+
     boolean isEmpty();
 
-    public int getCount();
+    public int size();
 
     public boolean contains(T value);
 

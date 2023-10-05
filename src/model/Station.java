@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Station {
+public class Station implements Comparable<Station> {
     private final String id;
     private final String code;
     private final String shortCode;
@@ -158,4 +158,8 @@ public class Station {
         return null; // Station not found
     }
 
+    @Override
+    public int compareTo(Station o) {
+        return this.getNameShort().compareTo(o.getNameShort());
+    }
 }

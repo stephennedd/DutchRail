@@ -4,8 +4,12 @@ import java.util.Comparator;
 
 public class SinglyLinkedList<T> implements BasicList<T> {
 
-    public Node head = null;
-    public Node tail = null;
+    private SinglyLinkedListNode head = null;
+    private SinglyLinkedListNode tail = null;
+
+    public SinglyLinkedListNode getHead() {
+        return head;
+    }
 
     @Override
     public boolean isEmpty() {
@@ -13,8 +17,8 @@ public class SinglyLinkedList<T> implements BasicList<T> {
     }
 
     @Override
-    public int getCount() {
-        Node current = head;
+    public int size() {
+        SinglyLinkedListNode current = head;
         int count = 0;
         while(current != null) {
             count++;
@@ -25,7 +29,7 @@ public class SinglyLinkedList<T> implements BasicList<T> {
 
     @Override
     public boolean contains(T value) {
-        Node current = head;
+        SinglyLinkedListNode current = head;
         while(current != null) {
             if(current.data.equals(value)) {
                 return true;
@@ -36,7 +40,7 @@ public class SinglyLinkedList<T> implements BasicList<T> {
     }
 
     public void add(T value) {
-        Node newNode = new Node(value); // create a new node
+        SinglyLinkedListNode newNode = new SinglyLinkedListNode(value); // create a new node
         if(isEmpty()) { // if list is empty
             head = newNode; // set the head to the new node
         } else { // if list is not empty
@@ -46,8 +50,8 @@ public class SinglyLinkedList<T> implements BasicList<T> {
     }
 
     public boolean remove(T value) { // remove the first occurrence of value
-        Node current = head;
-        Node previous = null;
+        SinglyLinkedListNode current = head;
+        SinglyLinkedListNode previous = null;
         while(current != null) { // loop until current.next is null
             if(current.data.equals(value)) { // if value is found
                 if(previous == null) { // if value is the head
@@ -64,7 +68,7 @@ public class SinglyLinkedList<T> implements BasicList<T> {
     }
 
     public void print() {
-        Node current = head;
+        SinglyLinkedListNode current = head;
 
         if (head == null) {
             System.out.println("List is empty");
@@ -80,8 +84,8 @@ public class SinglyLinkedList<T> implements BasicList<T> {
     }
 
     public T[] toArray() {
-        T[] array = (T[]) new Object[getCount()];
-        Node current = head;
+        T[] array = (T[]) new Object[size()];
+        SinglyLinkedListNode current = head;
         int index = 0;
 
         while(current != null) {
@@ -98,11 +102,11 @@ public class SinglyLinkedList<T> implements BasicList<T> {
             return; // No need to sort an empty list or a list with one element
         }
 
-        Node<T> sorted = null; // Initialize a new list for sorted elements
+        SinglyLinkedListNode<T> sorted = null; // Initialize a new list for sorted elements
 
-        Node<T> current = head;
+        SinglyLinkedListNode<T> current = head;
         while (current != null) {
-            Node<T> next = current.next;
+            SinglyLinkedListNode<T> next = current.next;
             sorted = insertSorted(sorted, current, comparator);
             current = next;
         }
@@ -110,12 +114,12 @@ public class SinglyLinkedList<T> implements BasicList<T> {
         head = sorted; // Update the head to point to the sorted list
     }
 
-    private Node<T> insertSorted(Node<T> sorted, Node<T> newNode, Comparator<T> comparator) {
+    private SinglyLinkedListNode<T> insertSorted(SinglyLinkedListNode<T> sorted, SinglyLinkedListNode<T> newNode, Comparator<T> comparator) {
         if (sorted == null || comparator.compare(newNode.data, sorted.data) <= 0) {
             newNode.next = sorted;
             return newNode;
         } else {
-            Node current = sorted;
+            SinglyLinkedListNode current = sorted;
             while (current.next != null && comparator.compare(newNode.data, (T) current.next.data) > 0) {
                 current = current.next;
             }

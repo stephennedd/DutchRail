@@ -1,6 +1,6 @@
 package trees;
 
-public class BinarySearchTree<T extends Comparable<T>> {
+public class BinarySearchTree<T extends Comparable<T>> implements BasicTree<T> {
     private BinaryTreeNode<T> root;
 
     public BinarySearchTree() {
@@ -8,30 +8,34 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // return true if the tree is empty
+    @Override
     public boolean isEmpty() {
         return root == null;
     }
 
     // return the number of nodes in the tree
+    @Override
     public int getCount() {
         return getCountRecursive(root);
     }
 
     // helper method for getCount()
-    private int getCountRecursive(BinaryTreeNode<T> root) {
-        if (root == null) {
+    private int getCountRecursive(BinaryTreeNode<T> current) {
+        if (current.isLeaf()) {
             return 0;
         }
 
-        return 1 + getCountRecursive(root.getLeft()) + getCountRecursive(root.getRight());
+        return 1 + getCountRecursive(current.getLeft()) + getCountRecursive(current.getRight());
     }
 
     // return the root of the tree
+    @Override
     public BinaryTreeNode<T> getRoot() {
         return root;
     }
 
     // return true if the tree contains the data
+    @Override
     public boolean contains(T data) {
         return containsRecursive(root, data);
     }
@@ -52,8 +56,19 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     // insert data node into the tree
+    @Override
     public void insert(T data) {
         root = insertRecursive(root, data);
+    }
+
+    @Override
+    public void remove(T data) {
+       //TODO: implement remove()
+    }
+
+    @Override
+    public int getTreeHeight() {
+        return getTreeHeightRecursive(root);
     }
 
     private BinaryTreeNode<T> insertRecursive(BinaryTreeNode<T> root, T data) {
@@ -110,5 +125,29 @@ public class BinarySearchTree<T extends Comparable<T>> {
             postOrderTraversalRecursive(node.getRight(), sb);
             sb.append(node.getData()).append(" ");
         }
+    }
+
+    private int getTreeHeightRecursive(BinaryTreeNode<T> root) {
+        if (root == null) {
+            return 0;
+        }
+
+        return 1 + Math.max(getTreeHeightRecursive(root.getLeft()), getTreeHeightRecursive(root.getRight()));
+    }
+
+    @Override
+    public boolean isBalanced() {
+        return isBalancedRecursive(root);
+    }
+
+    private boolean isBalancedRecursive(BinaryTreeNode<T> root) {
+        if (root == null) {
+            return true;
+        }
+
+        int leftHeight = getTreeHeightRecursive(root.getLeft());
+        int rightHeight = getTreeHeightRecursive(root.getRight());
+
+        return Math.abs(leftHeight - rightHeight) <= 1 && isBalancedRecursive(root.getLeft()) && isBalancedRecursive(root.getRight());
     }
 }

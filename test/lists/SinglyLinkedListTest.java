@@ -1,7 +1,6 @@
 package lists;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Comparator;
 
@@ -20,7 +19,7 @@ class SinglyLinkedListTest {
     void testEmpty() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
         assertTrue(list.isEmpty());
-        assertEquals(0, list.getCount());
+        assertEquals(0, list.size());
         assertFalse(list.contains(1));
     }
 
@@ -32,7 +31,7 @@ class SinglyLinkedListTest {
         list.add(3);
         assertFalse(list.isEmpty());
         list.print();
-        assertEquals(3, list.getCount());
+        assertEquals(3, list.size());
         assertTrue(list.contains(1));
         assertTrue(list.contains(2));
         assertTrue(list.contains(3));
@@ -46,10 +45,10 @@ class SinglyLinkedListTest {
         list.add(3);
         list.remove(2);
         assertFalse(list.contains(2));
-        assertEquals(2, list.getCount());
+        assertEquals(2, list.size());
         list.remove(1);
         assertFalse(list.contains(1));
-        assertEquals(1, list.getCount());
+        assertEquals(1, list.size());
     }
 
     @Test
@@ -59,7 +58,7 @@ class SinglyLinkedListTest {
         list.add(2);
         list.add(3);
         list.remove(4);
-        assertEquals(3, list.getCount());
+        assertEquals(3, list.size());
     }
 
    @Test
@@ -83,9 +82,9 @@ class SinglyLinkedListTest {
         list.add("Utrecht");
         list.add("Rotterdam");
         list.add("Den Haag");
-        assertEquals(5, list.getCount());
-        assertEquals("Zaltbommel", list.head.data);
+        assertEquals(5, list.size());
+        assertEquals("Zaltbommel", list.getHead().data);
         list.sort(Comparator.naturalOrder());
-        assertEquals("Amsterdam", list.head.data);
+        assertEquals("Amsterdam", list.getHead().data);
     }
 }

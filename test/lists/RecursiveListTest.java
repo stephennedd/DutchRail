@@ -1,6 +1,5 @@
 package lists;
 
-import lists.RecursiveList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,9 +16,9 @@ class RecursiveListTest {
         test.add(4);
         test.add(3);
         assertFalse(test.isEmpty());
-        assertEquals(3, test.getCount());
+        assertEquals(3, test.size());
         test.remove(1);
-        assertEquals(2, test.getCount());
+        assertEquals(2, test.size());
     }
     @Test
     void test() {

@@ -40,20 +40,15 @@ public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, It
     }
 
     public boolean isEmpty() {
-        return data == null;
+        return next == null;
     }
 
     public void add(T value) {
         if (isEmpty()) {
-            setData(value);
-        } // compare the data to the value and add it to the list if it is larger
-//        else if(data.compareTo(value) < 0)
-//        {
-//
-//        }
-        else {
-            this.next = new RecursiveList<>(value, this.next, this.comparator);
-            this.data = value;
+            setData(value); // if the list is empty, set the data to the value
+        }
+        else { // if the list is not empty, add the value to the next list
+            next.add(value);
         }
     }
 
@@ -76,19 +71,6 @@ public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, It
         }
     }
 
-
-    @Override
-    public String toString() {
-        if(isEmpty()) {
-            return "[]";
-        } else {
-            return "RecursiveList{" +
-                    "data=" + data +
-                    ", next=" + next +
-                    '}';
-        }
-    }
-
     public T peekTail() {
         if (next == null) {
             return null;
@@ -106,26 +88,25 @@ public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, It
 
 
     @Override
-    public int getCount() {
+    public int size() {
         if(isEmpty()) {
             assert next == null : "rest is not null";
             return 0;
         } else {
             assert next!= null : "rest is null";
-            return 1 + next.getCount();
+            return 1 + next.size();
         }
     }
 
     @Override
     public boolean contains(T value) {
-        if(isEmpty()) {
+        if(isEmpty()) { // if the list is empty, return false
             return false;
+        }
+        if(data.compareTo(value) == 0) { // if the data is equal to the value, return true
+            return true;
         } else {
-            if(data.equals(value)) {
-                return true;
-            } else {
-                return next.contains(value);
-            }
+            return next.contains(value);
         }
     }
 
@@ -157,5 +138,17 @@ public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, It
                 return result;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        if (isEmpty()) {
+            return "[]"; // return an empty list
+        }
+        String result = (data == null) ? "NULL" : data.toString(); // add the data to the result
+        if(!next.isEmpty()) { // if the next list is not empty, add a comma and the next list to the result
+            result += ", " + next.toString();
+        }
+        return result;
     }
 }
