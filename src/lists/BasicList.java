@@ -2,7 +2,7 @@ package lists;
 
 public interface BasicList<T> {
 
-    public void add(T value);
+    public void append(T value);
 
     boolean isEmpty();
 

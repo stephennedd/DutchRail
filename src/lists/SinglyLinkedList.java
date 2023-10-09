@@ -39,7 +39,7 @@ public class SinglyLinkedList<T> implements BasicList<T> {
         return false;
     }
 
-    public void add(T value) {
+    public void append(T value) {
         SinglyLinkedListNode newNode = new SinglyLinkedListNode(value); // create a new node
         if(isEmpty()) { // if list is empty
             head = newNode; // set the head to the new node
@@ -67,20 +67,18 @@ public class SinglyLinkedList<T> implements BasicList<T> {
         return false; // return false if value is not found
     }
 
-    public void print() {
-        SinglyLinkedListNode current = head;
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        SinglyLinkedListNode<T> current = head;
 
-        if (head == null) {
-            System.out.println("List is empty");
-            return;
-        }
-
-        System.out.println("Nodes of the singly linked list: ");
         while(current != null) {
-            System.out.print( current.data + " ");
+            sb.append(current.data);
+            sb.append(" -> ");
             current = current.next;
         }
-        System.out.println();
+        sb.append("null");
+        return sb.toString();
     }
 
     public T[] toArray() {
@@ -115,12 +113,12 @@ public class SinglyLinkedList<T> implements BasicList<T> {
     }
 
     private SinglyLinkedListNode<T> insertSorted(SinglyLinkedListNode<T> sorted, SinglyLinkedListNode<T> newNode, Comparator<T> comparator) {
-        if (sorted == null || comparator.compare(newNode.data, sorted.data) <= 0) {
+        if (sorted == null || comparator.compare(newNode.data, sorted.data) <= 0) { // If the new node is less than or equal to the first element, insert it before the current head.
             newNode.next = sorted;
             return newNode;
-        } else {
-            SinglyLinkedListNode current = sorted;
-            while (current.next != null && comparator.compare(newNode.data, (T) current.next.data) > 0) {
+        } else { // Otherwise, find the position to insert the new node
+            SinglyLinkedListNode<T> current = sorted;
+            while (current.next != null && comparator.compare(newNode.data, (T) current.next.data) > 0) { // Loop until current.next is null or the new node is less than the next node
                 current = current.next;
             }
             newNode.next = current.next;

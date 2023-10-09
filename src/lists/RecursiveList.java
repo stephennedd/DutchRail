@@ -43,12 +43,12 @@ public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, It
         return next == null;
     }
 
-    public void add(T value) {
+    public void append(T value) {
         if (isEmpty()) {
             setData(value); // if the list is empty, set the data to the value
         }
         else { // if the list is not empty, add the value to the next list
-            next.add(value);
+            next.append(value);
         }
     }
 

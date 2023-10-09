@@ -12,9 +12,9 @@ class RecursiveListTest {
     @BeforeEach
     void setUp() {
         test = new RecursiveList<Integer>();
-        test.add(1);
-        test.add(4);
-        test.add(3);
+        test.append(1);
+        test.append(4);
+        test.append(3);
         assertFalse(test.isEmpty());
         assertEquals(3, test.size());
         test.remove(1);

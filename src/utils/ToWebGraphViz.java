@@ -41,4 +41,8 @@ public class ToWebGraphViz<T> {
         }
     }
 
+    private void generateUrl() {
+        // create a url using the dot string
+    }
+
 }

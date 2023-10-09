@@ -37,8 +37,6 @@ public class StationHashMap {
         }
         int index = getIndex(key);
 
-
-
         if (map == null) {
             return false;
         }
@@ -98,7 +96,7 @@ public class StationHashMap {
     }
 
     // return the value for the key or null if the key is not found
-    public Station get(String key) {
+    public StationEntry get(String key) {
         // preconditions: key is not null,
         if (key == null) {
             throw new AssertionError("key is null");
@@ -114,7 +112,7 @@ public class StationHashMap {
             if (containsKey(key)) {
                 for (StationEntry entry : map[index]) {
                     if (entry.areEquals(key)) {
-                        return (Station) entry.getValue();
+                        return entry;
                     }
                 }
             }
@@ -142,7 +140,7 @@ public class StationHashMap {
                     if (entry.getKey().equals(key)) {
                         entry.setDeleted(true);
                         count--;
-                        return (Station) entry.getValue();
+                        return entry.getValue();
                     }
                 }
             }

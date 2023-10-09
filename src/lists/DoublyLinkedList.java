@@ -13,11 +13,10 @@ public class DoublyLinkedList<T extends Comparable<T>>  implements BasicList<T>{
     public DoublyLinkedList() {
         this.head = null;
         this.tail = null;
-        T comparator = null;
     }
 
     @Override
-    public void add(T value) {
+    public void append(T value) {
         DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<>(value);
         if(isEmpty()) { // if list is empty
             head = tail = newNode; // set the head to the new node
@@ -68,34 +67,33 @@ public class DoublyLinkedList<T extends Comparable<T>>  implements BasicList<T>{
 
     public boolean remove(T value) {
         if (isEmpty()) {
-            return false; // return false if the list is empty
+            return false; // value is NOT 'removed'
         } else {
-            if (head.data.equals(value)) { // if the head is equal to the value
-                if (tail == head) { // if the tail is equal to the head
-                    head = null; // set the head to null
-                    tail = null; // set the tail to null
-                } else { // if the tail is not equal to the head
-                    head = head.next; // set the head to the next node
-                    head.prev = null; // set the head.prev to null
+            if (head.data.equals(value)) { // if the first node is equal to the value
+                if (tail == head) { // and there is only one node in the list
+                    head = null;
+                    tail = null;
+                } else { // and there are more than one node in the list
+                    head = head.next;
+                    head.prev = null;
                 }
-                return true; // return true
+                return true; // value is 'removed'
             } else {
-                DoublyLinkedListNode<T> current = head; // initialize current
+                DoublyLinkedListNode<T> current = head;
                 while (current != null && !current.data.equals(value)) { // loop until current.next is null or current.data is equal to value
-                    current = current.next; // set current to the next node
+                    current = current.next;
                 }
-
-                if (current == null) { // if current is null
-                    return false; // return false
-                } else { // if current is not null
-                    if (current == tail) { // if current is equal to tail
-                        tail = tail.prev; // set tail to tail.prev
-                        tail.next = null; // set tail.next to null
-                    } else {
-                        current.prev.next = current.next; // set current.prev.next to current.next
-                        current.next.prev = current.prev; // set current.next.prev to current.prev
+                if (current == null) { // if the value is NOT in the list
+                    return false; // value is NOT 'removed'
+                } else { // if the value to be removed is found
+                    if (current == tail) { // if the value is the last node
+                        tail = tail.prev;
+                        tail.next = null;
+                    } else { // if the value is NOT the last node
+                        current.prev.next = current.next;
+                        current.next.prev = current.prev;
                     }
-                    return true; // return true
+                    return true; // value is 'removed'
                 }
             }
         }
@@ -119,9 +117,8 @@ public class DoublyLinkedList<T extends Comparable<T>>  implements BasicList<T>{
 
     @Override
     public boolean contains(T value) {
-        if (isEmpty()) {
-            throw new IllegalArgumentException("the list is empty"); // throw an exception if the list is empty
-        }
+        assert value != null : "value can't be null";
+
         DoublyLinkedListNode current = head; // initialize current
         while(current != null) { // loop until current.next is null
             if(current.data.equals(value)) {
@@ -139,7 +136,7 @@ public class DoublyLinkedList<T extends Comparable<T>>  implements BasicList<T>{
             return "DoublyLinkedList is empty";
         }
         DoublyLinkedListNode current = head;
-        System.out.println("Nodes of doubly linked list: ");
+        result.append("Nodes of doubly linked list: ");
         while(current != null) {
             result.append(current.data).append(", ");
             current = current.next;
@@ -147,22 +144,4 @@ public class DoublyLinkedList<T extends Comparable<T>>  implements BasicList<T>{
         return result.toString();
     }
 
-    public static void main(String[] args) {
-        DoublyLinkedList<Station> list = new DoublyLinkedList<>();
-        Station station = new Station("1", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a");
-        Station station2 = new Station("2", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b");
-        Station station3 = new Station("3", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c");
-
-        list.add(station3);
-        //list.addSorted(station2, Comparator.comparing(Station::getNameShort));
-        //list.addSorted(station, Comparator.comparing(Station::getNameShort));
-        list.add(station);
-        list.add(station2);
-
-        Comparator<Station> comparator = Comparator.comparing(Station::getNameShort);
-        list = Sort.insertionSortDoublyLinkedList(list, comparator);
-
-        //list.remove(station2);
-        System.out.println(list);
-    }
 }
