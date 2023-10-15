@@ -5,7 +5,7 @@ import java.util.Iterator;
 public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, Iterable<T>{
     private T data;
     private RecursiveList<T> next;
-    private T comparator;
+    private final T comparator;
 
     public RecursiveList() {
         this.data = null;
@@ -25,7 +25,7 @@ public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, It
     }
 
 
-    public void setData(T data) {
+    private void setData(T data) {
         if (data == null) {
             throw new IllegalArgumentException("data cannot be null");
         }
@@ -71,6 +71,27 @@ public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, It
         }
     }
 
+    public T get(int index) {
+        if (isEmpty()) {
+            return null;
+        }
+        if(index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        RecursiveList<T> current = this;
+        int count = 0;
+
+        while(current != null) {
+            if(count == index) {
+                return current.data;
+            }
+            count++;
+            current = current.next;
+        }
+        return null;
+    }
+
     public T peekTail() {
         if (next == null) {
             return null;
@@ -83,7 +104,11 @@ public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, It
     }
 
     public T peekHead() {
-        return data;
+        if (isEmpty()) {
+            return null;
+        } else {
+            return data;
+        }
     }
 
 
@@ -115,6 +140,7 @@ public class RecursiveList<T extends Comparable<T>>  implements BasicList<T>, It
         RecursiveIterator iterator = new RecursiveIterator(this);
         return null;
     }
+
 
     class RecursiveIterator<Q extends Comparable<Q>> implements Iterator<Q> {
         private RecursiveList<Q> current;

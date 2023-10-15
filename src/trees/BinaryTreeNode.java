@@ -1,26 +1,21 @@
 package trees;
 
 public class BinaryTreeNode<T> {
-    private T data;
+    private final T data;
     private BinaryTreeNode<T> left;
     private BinaryTreeNode<T> right;
-
-    private  BinaryTreeNode<T> parent;
 
     public BinaryTreeNode(T data) {
         this.data = data;
         this.left = null;
         this.right = null;
-        this.parent = null;
     }
 
-    public BinaryTreeNode(T data, BinaryTreeNode<T> left, BinaryTreeNode<T> right, BinaryTreeNode<T> parent) {
-        this.data = data;
-        this.left = left;
-        this.right = right;
-        this.parent = parent;
-    }
-
+//    public BinaryTreeNode(T data, BinaryTreeNode<T> left, BinaryTreeNode<T> right, BinaryTreeNode<T> parent) {
+//        this.data = data;
+//        this.left = left;
+//        this.right = right;
+//    }
 
     public T getData() {
         return this.data;
@@ -34,9 +29,6 @@ public class BinaryTreeNode<T> {
         return this.right;
     }
 
-    public void setData(T data) {
-        this.data = data;
-    }
 
     public void setLeft(BinaryTreeNode<T> left) {
         this.left = left;
@@ -58,6 +50,20 @@ public class BinaryTreeNode<T> {
         return !hasLeft() && !hasRight();
     }
 
+    public BinaryTreeNode<T> rotateLeft() { // balance node by rotating left
+        BinaryTreeNode<T> newRoot = this.right;
+        this.right = newRoot.getLeft();
+        newRoot.setLeft(this);
+        return newRoot;
+    }
+
+    public BinaryTreeNode<T> rotateRight() { // balance node by rotating right
+        BinaryTreeNode<T> newRoot = this.left;
+        this.left = newRoot.getRight();
+        newRoot.setRight(this);
+        return newRoot;
+    }
+
     public int getHeight() {
         return getHeightRecursive(this);
     }
@@ -69,22 +75,5 @@ public class BinaryTreeNode<T> {
 
         return 1 + Math.max(getHeightRecursive(current.getLeft()), getHeightRecursive(current.getRight()));
     }
-
-    // balance node by rotating left
-    public BinaryTreeNode<T> rotateLeft() {
-        BinaryTreeNode<T> newRoot = this.right;
-        this.right = newRoot.getLeft();
-        newRoot.setLeft(this);
-        return newRoot;
-    }
-
-    // balance node by rotating right
-    public BinaryTreeNode<T> rotateRight() {
-        BinaryTreeNode<T> newRoot = this.left;
-        this.left = newRoot.getRight();
-        newRoot.setRight(this);
-        return newRoot;
-    }
-
 
 }

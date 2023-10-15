@@ -195,4 +195,11 @@ class StationTest {
         assertEquals("G", station.getLatitude());
     }
 
+    @Test
+    void testCompareTo() {
+        Station station = new Station("01", "ABC", "AB", "A", "B", "C", "D", "E", "F", "G", "H");
+        Station station2 = new Station("01", "ABC", "AB", "A", "B", "C", "D", "E", "F", "G", "H");
+        assertEquals(0, station.compareTo(station2));
+    }
+
 }

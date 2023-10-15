@@ -31,18 +31,13 @@ public class ToWebGraphViz<T> {
     private void generateDot(BinaryTreeNode<T> node, List<String> lines) {
         if (node != null) {
             if (node.getLeft() != null) {
-                lines.add(node.getData() + " -> " + node.getLeft().getData() + ";") ;
+                lines.add(node.getData() + " -> " + node.getLeft().getData().toString() + ";") ;
                 generateDot(node.getLeft(), lines);
             }
             if (node.getRight() != null) {
-                lines.add(node.getData() + " -> " + node.getRight().getData()+ ";");
+                lines.add(node.getData() + " -> " + node.getRight().getData().toString() + ";");
                 generateDot(node.getRight(), lines);
             }
         }
     }
-
-    private void generateUrl() {
-        // create a url using the dot string
-    }
-
 }

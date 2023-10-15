@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SinglyLinkedListTest {
 
     // Create a custom comparator for testing purposes
-    private Comparator<Integer> comparator = Comparator.naturalOrder();
+    private final Comparator<Integer> comparator = Comparator.naturalOrder();
 
     private SinglyLinkedList<Integer> unsortedList;
 
@@ -24,6 +24,32 @@ class SinglyLinkedListTest {
         assertTrue(unsortedList.isEmpty());
         assertEquals(0, unsortedList.size());
         assertFalse(unsortedList.contains(1));
+    }
+
+    @Test
+    void testGetValidIndex() {
+        unsortedList.append(1);
+        unsortedList.append(2);
+        unsortedList.append(3);
+        assertEquals(1, unsortedList.get(0));
+        assertEquals(2, unsortedList.get(1));
+        assertEquals(3, unsortedList.get(2));
+    }
+
+    @Test
+    void testGetIndexOutOfBounds() {
+        unsortedList.append(1);
+        unsortedList.append(2);
+        unsortedList.append(3);
+        assertThrows(IndexOutOfBoundsException.class, () -> unsortedList.get(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> unsortedList.get(3));
+    }
+
+    @Test
+    public void testEmptyList() {
+        SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
+
+        assertNull(list.get(0));
     }
 
     @Test

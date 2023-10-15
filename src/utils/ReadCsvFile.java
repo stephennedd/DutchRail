@@ -1,5 +1,6 @@
 package utils;
 
+import model.Connection;
 import model.Station;
 
 import java.io.BufferedReader;
@@ -17,7 +18,7 @@ import org.apache.commons.csv.CSVRecord;
 
 
 public class ReadCsvFile {
-    private String path;
+    private final String path;
 
     public ReadCsvFile(String path) {
         this.path = path;
@@ -38,9 +39,9 @@ public class ReadCsvFile {
             }
             reader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("File not found.");
+            throw new RuntimeException("File not found.");
         } catch (IOException e) {
-            System.out.println("Something went wrong.");
+            throw new RuntimeException("IO Exception.");
         }
 
         // post conditions: data is not empty
@@ -141,5 +142,36 @@ public class ReadCsvFile {
             }
         }
         return stations;
+    }
+
+    public static ArrayList<Connection> readConnections(String filename) {
+        // preconditions: filename is not null
+        assert filename != null : "filename is null";
+
+        ArrayList<Connection> connections = new ArrayList<>();
+        ReadCsvFile reader = new ReadCsvFile(filename);
+        ArrayList<String> data = reader.read();
+
+        assert !data.isEmpty() : "data is empty";
+
+        int expectedLength = 5;
+        for (String line : data) {
+            String[] parts = line.split(",");
+            assert parts.length == expectedLength : "parts length is not " + expectedLength;
+        }
+
+        for (String line : data) {
+            String[] parts = line.split(",");
+
+            Connection connection = new Connection(
+                    parts[0],
+                    parts[1],
+                    Integer.parseInt(parts[2]),
+                    Integer.parseInt(parts[3]),
+                    Integer.parseInt(parts[4])
+            );
+            connections.add(connection);
+        }
+        return connections;
     }
 }

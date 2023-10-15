@@ -2,19 +2,20 @@ package trees;
 
 public interface BasicTree<T> {
 
-    public boolean isEmpty();
+    boolean isEmpty();
 
-    public int getCount();
+    int size();
 
-    public BinaryTreeNode<T> getRoot();
+    BinaryTreeNode<T> getRoot();
 
-    public boolean contains(T data);
+    boolean contains(T data);
 
-    public void insert(T data);
+    void put(T data);
 
-    public void remove(T data);
+    BinaryTreeNode<T> get(T key);
 
-    public int getTreeHeight();
+    T remove(T key);
 
-    public boolean isBalanced();
+    int getTreeHeight();
+
 }
