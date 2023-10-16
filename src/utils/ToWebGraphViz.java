@@ -1,15 +1,15 @@
 package utils;
 
-import trees.BinaryTreeNode;
+import trees.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ToWebGraphViz<T> {
     private StringBuilder dot;
-    private BinaryTreeNode<T> root;
+    private TreeNode<T> root;
 
-    public ToWebGraphViz(BinaryTreeNode<T> root) {
+    public ToWebGraphViz(TreeNode<T> root) {
         this.root = root;
         dot = new StringBuilder();
         dot.append("digraph BinarySearchTree {\n");
@@ -28,7 +28,7 @@ public class ToWebGraphViz<T> {
         return dot.toString();
     }
 
-    private void generateDot(BinaryTreeNode<T> node, List<String> lines) {
+    private void generateDot(TreeNode<T> node, List<String> lines) {
         if (node != null) {
             if (node.getLeft() != null) {
                 lines.add(node.getData() + " -> " + node.getLeft().getData().toString() + ";") ;

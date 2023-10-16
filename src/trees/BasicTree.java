@@ -6,13 +6,13 @@ public interface BasicTree<T> {
 
     int size();
 
-    BinaryTreeNode<T> getRoot();
+    TreeNode<T> getRoot();
 
     boolean contains(T data);
 
     void put(T data);
 
-    BinaryTreeNode<T> get(T key);
+    TreeNode<T> get(T key);
 
     T remove(T key);
 

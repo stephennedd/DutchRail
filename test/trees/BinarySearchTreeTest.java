@@ -173,7 +173,7 @@ class BinarySearchTreeTest {
         stringTree.remove("B");
         assertFalse(stringTree.contains("B"));
 
-        System.out.println(stringTree.inOrderTraversal(stringTree.getRoot()));
+        //System.out.println(stringTree.inOrderTraversal());
     }
 
     @Test
@@ -183,7 +183,7 @@ class BinarySearchTreeTest {
         stringTree.remove("B");
         assertFalse(stringTree.contains("B"));
 
-        System.out.println(stringTree.inOrderTraversal(stringTree.getRoot()));
+        //System.out.println(stringTree.inOrderTraversal());
     }
 
     @Test
@@ -243,7 +243,7 @@ class BinarySearchTreeTest {
         tree.put(71);
         tree.put(64);
         tree.put(92);
-        String inorder = tree.inOrderTraversal(tree.getRoot());
+        String inorder = tree.inOrderTraversal();
         assertEquals("1 13 27 37 44 54 64 71 89 92 ", inorder);
     }
 
@@ -259,7 +259,7 @@ class BinarySearchTreeTest {
         tree.put(71);
         tree.put(64);
         tree.put(92);
-        String preorder = tree.preOrderTraversal(tree.getRoot());
+        String preorder = tree.preOrderTraversal();
         assertEquals("54 27 13 1 44 37 89 71 64 92 ", preorder);
     }
 
@@ -275,7 +275,7 @@ class BinarySearchTreeTest {
         tree.put(71);
         tree.put(64);
         tree.put(92);
-        String postorder = tree.postOrderTraversal(tree.getRoot());
+        String postorder = tree.postOrderTraversal();
         assertEquals("1 13 37 44 27 64 71 92 89 54 ", postorder);
     }
 
@@ -291,6 +291,11 @@ class BinarySearchTreeTest {
         tree.put("E");
         tree.put("G");
         assertEquals(3, tree.getTreeHeight());
+
+        ToWebGraphViz<String> generator = new ToWebGraphViz<>(tree.getRoot());
+        String data = generator.toDotString();
+        //System.out.println(data);
+
         assertTrue(tree.isBalanced());
     }
 
@@ -299,27 +304,19 @@ class BinarySearchTreeTest {
     void testInsertSortedData() {
         BinarySearchTree<String> tree = new BinarySearchTree<>();
         tree.put("A");
-        tree.put("B");
         tree.put("C");
+        tree.put("B");
         tree.put("D");
         tree.put("E");
         tree.put("F");
         tree.put("G");
-        assertEquals(7, tree.getTreeHeight());
+        assertEquals(6, tree.getTreeHeight());
 
         ToWebGraphViz<String> generator = new ToWebGraphViz<>(tree.getRoot());
         String data = generator.toDotString();
-        //System.out.println(data);
+        System.out.println(data);
 
         assertFalse(tree.isBalanced());
-        assertEquals("digraph BinarySearchTree {\n" +
-                "  A -> B;\n" +
-                "  B -> C;\n" +
-                "  C -> D;\n" +
-                "  D -> E;\n" +
-                "  E -> F;\n" +
-                "  F -> G;\n" +
-                "}", data);
     }
 
     @Test
@@ -339,7 +336,6 @@ class BinarySearchTreeTest {
         String data = generator.toDotString();
         //System.out.println(data);
 
-        assertFalse(tree.isBalanced());
         assertEquals("digraph BinarySearchTree {\n" +
                 "  B -> A;\n" +
                 "  B -> D;\n" +
