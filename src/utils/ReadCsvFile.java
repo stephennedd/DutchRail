@@ -33,8 +33,6 @@ public class ReadCsvFile {
             BufferedReader reader = new BufferedReader(new FileReader(this.path));
             String line;
             while ((line = reader.readLine()) != null) {
-                // check the line matches the regex
-
                 data.add(line);
             }
             reader.close();
@@ -69,7 +67,14 @@ public class ReadCsvFile {
 
         for (String line : data) {
             String[] parts = line.split(",");
-
+            // strip the quotes from the parts
+            for (int i = 0; i < parts.length; i++) {
+                Pattern pattern = Pattern.compile("^\"(.*)\"$");
+                Matcher matcher = pattern.matcher(parts[i]);
+                if (matcher.find()) {
+                    parts[i] = matcher.group(1);
+                }
+            }
             Station station = new Station(
                     parts[0],
                     parts[1],
@@ -91,7 +96,7 @@ public class ReadCsvFile {
     public static List<Station> readStationsWithValidation(String filename) {
         // preconditions: filename is not null
         assert filename != null : "filename is null";
-        List<Station> dataEntries = new ArrayList<>();
+        List<Station> stationList = new ArrayList<>();
 
         try (FileReader fileReader = new FileReader(filename);
              CSVParser csvParser = CSVFormat.DEFAULT
@@ -112,16 +117,16 @@ public class ReadCsvFile {
                 String geoLng = record.get("geo_lng");
 
                 // Create an instance of YourDataClass and populate it with the parsed data
-                Station dataEntry = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type, geoLat, geoLng);
+                Station station = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type, geoLat, geoLng);
 
-                dataEntries.add(dataEntry);
+                stationList.add(station);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return dataEntries;
+        return stationList;
     }
 
 

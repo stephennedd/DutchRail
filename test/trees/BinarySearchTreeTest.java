@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.ToWebGraphViz;
+import utils.TreeUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -243,7 +244,7 @@ class BinarySearchTreeTest {
         tree.put(71);
         tree.put(64);
         tree.put(92);
-        String inorder = tree.inOrderTraversal();
+        String inorder = TreeUtils.inOrderTraversal(tree);
         assertEquals("1 13 27 37 44 54 64 71 89 92 ", inorder);
     }
 
@@ -259,7 +260,7 @@ class BinarySearchTreeTest {
         tree.put(71);
         tree.put(64);
         tree.put(92);
-        String preorder = tree.preOrderTraversal();
+        String preorder = TreeUtils.preOrderTraversal(tree);
         assertEquals("54 27 13 1 44 37 89 71 64 92 ", preorder);
     }
 
@@ -275,7 +276,7 @@ class BinarySearchTreeTest {
         tree.put(71);
         tree.put(64);
         tree.put(92);
-        String postorder = tree.postOrderTraversal();
+        String postorder = TreeUtils.postOrderTraversal(tree);
         assertEquals("1 13 37 44 27 64 71 92 89 54 ", postorder);
     }
 

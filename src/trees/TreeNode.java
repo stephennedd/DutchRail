@@ -1,21 +1,17 @@
 package trees;
 
 public class TreeNode<T> {
-    private final T data;
+    private T data;
     private TreeNode<T> left;
     private TreeNode<T> right;
+    private int height;
 
     public TreeNode(T data) {
         this.data = data;
         this.left = null;
         this.right = null;
+        this.height = 1;
     }
-
-//    public BinaryTreeNode(T data, BinaryTreeNode<T> left, BinaryTreeNode<T> right, BinaryTreeNode<T> parent) {
-//        this.data = data;
-//        this.left = left;
-//        this.right = right;
-//    }
 
     public T getData() {
         return this.data;
@@ -50,20 +46,6 @@ public class TreeNode<T> {
         return !hasLeft() && !hasRight();
     }
 
-    public TreeNode<T> rotateLeft() { // balance node by rotating left
-        TreeNode<T> newRoot = this.right;
-        this.right = newRoot.getLeft();
-        newRoot.setLeft(this);
-        return newRoot;
-    }
-
-    public TreeNode<T> rotateRight() { // balance node by rotating right
-        TreeNode<T> newRoot = this.left;
-        this.left = newRoot.getRight();
-        newRoot.setRight(this);
-        return newRoot;
-    }
-
     public int getHeight() {
         return getHeightRecursive(this);
     }
@@ -76,4 +58,12 @@ public class TreeNode<T> {
         return 1 + Math.max(getHeightRecursive(current.getLeft()), getHeightRecursive(current.getRight()));
     }
 
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+
+    public void setData(T data) {
+        this.data = data;
+    }
 }

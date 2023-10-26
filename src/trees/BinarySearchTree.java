@@ -40,7 +40,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements BasicTree<T> {
     // https://www.youtube.com/watch?v=UcOxGmj45AA
     public T remove(T key) {
         if (key == null) {
-            throw new IllegalArgumentException("Key cannot be null");
+            throw new IllegalArgumentException("The key parameter cannot be null");
         }
 
         if (isEmpty()) {
@@ -116,7 +116,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements BasicTree<T> {
     @Override
     public TreeNode<T> get(T key) {
         if(key == null) {
-            throw new IllegalArgumentException("Key cannot be null");
+            throw new IllegalArgumentException("The key parameter cannot be null");
         }
         return getRecursive(root, key);
     }
@@ -124,17 +124,6 @@ public class BinarySearchTree<T extends Comparable<T>> implements BasicTree<T> {
     @Override
     public int getTreeHeight() { return TreeUtils.getTreeHeight(this); }
 
-    public String inOrderTraversal() {
-        return TreeUtils.inOrderTraversal(this);
-    }
-
-    public String preOrderTraversal() {
-        return TreeUtils.preOrderTraversal(this);
-    }
-
-    public String postOrderTraversal() {
-        return TreeUtils.postOrderTraversal(this);
-    }
 
     public boolean isBalanced() { return TreeUtils.isBalancedRecursive(root); }
 
