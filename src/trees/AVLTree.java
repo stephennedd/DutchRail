@@ -107,6 +107,7 @@ public class AVLTree<T extends Comparable<T>> implements BasicTree<T> {
 
         if (balanceFactor > 1 && data.compareTo(node.getLeft().getData()) < 0) { // left-left case
             return rotateRight(node);
+
         }
 
         if (balanceFactor < -1 && data.compareTo(node.getRight().getData()) > 0) { // right-right case
@@ -131,11 +132,11 @@ public class AVLTree<T extends Comparable<T>> implements BasicTree<T> {
             return new TreeNode<>(data);
         }
 
-        if (data.compareTo(node.getData()) < 0) {
+        if (data.compareTo(node.getData()) < 0) { // data is less than node
             node.setLeft(insertRecursive(node.getLeft(), data));
-        } else if (data.compareTo(node.getData()) > 0) {
+        } else if (data.compareTo(node.getData()) > 0) { // data is greater than node
             node.setRight(insertRecursive(node.getRight(), data));
-        } else {
+        } else { // data is equal to node
             return node;
         }
 
@@ -173,10 +174,6 @@ public class AVLTree<T extends Comparable<T>> implements BasicTree<T> {
     }
 
     private TreeNode<T> deleteRecursive(TreeNode<T> node, T key) {
-        if (node == null) {
-            return null;
-        }
-
         if (key.compareTo(node.getData()) < 0) { // key is less than node
             node.setLeft(deleteRecursive(node.getLeft(), key));
         } else if (key.compareTo(node.getData()) > 0) { // key is greater than node

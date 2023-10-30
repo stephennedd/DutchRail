@@ -1,5 +1,7 @@
 package model;
 
+import lists.SinglyLinkedList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,21 +65,13 @@ public class Station implements Comparable<Station> {
         return code;
     }
 
+    public String getSlug() {
+        return slug;
+    }
+
     @Override
     public String toString() {
-        return "Station{" +
-                "id='" + id + '\'' +
-                ", code='" + code + '\'' +
-                ", shortCode='" + shortCode + '\'' +
-                ", nameShort='" + nameShort + '\'' +
-                ", nameMedium='" + nameMedium + '\'' +
-                ", nameLong='" + nameLong + '\'' +
-                ", slug='" + slug + '\'' +
-                ", countryCode='" + countryCode + '\'' +
-                ", type='" + type + '\'' +
-                ", latitude='" + latitude + '\'' +
-                ", longitude='" + longitude + '\'' +
-                '}';
+        return id + ", " + code + ", " + shortCode + ", " + nameShort + ", " + nameMedium + ", " + nameLong + ", " + slug + ", " + countryCode + ", " + type + ", " + latitude + ", " + longitude;
     }
 
 
@@ -122,6 +116,39 @@ public class Station implements Comparable<Station> {
         return null; // station not found
     }
 
+    public static int linearSearchByNameShortSinglyLinkedList(SinglyLinkedList<Station> stations, String searchedStation, boolean searchBy) {
+        System.out.println("Linear search for: " + searchedStation);
+        // preconditions: stations is not null and not empty
+        assert stations != null : "stations is null";
+        assert !stations.isEmpty() : "stations is empty";
+        assert searchedStation != null : "searchedStation is null";
+
+        long startTime = System.nanoTime();
+
+        for (int i = 0; i < stations.size(); i++) {
+            if (searchBy) {
+                if (stations.get(i).getNameShort().equals(searchedStation)) {
+                    long endTime = System.nanoTime();
+                    System.out.println("Execution time linear search in nanoseconds: " + (endTime - startTime));
+                    System.out.println("Found station at index " + i + ".");
+                    return i; // station found
+                }
+            } else {
+                if (stations.get(i).getCode().equals(searchedStation)) {
+                    long endTime = System.nanoTime();
+                    System.out.println("Execution time linear search in nanoseconds: " + (endTime - startTime));
+                    System.out.println("Found station at index " + i + ".");
+                    return i; // station found
+                }
+            }
+        }
+
+        long endTime = System.nanoTime();
+        System.out.println("Execution time linear search in nanoseconds: " + (endTime - startTime));
+        System.out.println("Station not found");
+        return -1; // station not found
+    }
+
     // binary search stations by name. this is an 0(log n) algorithm
     public static Station binarySearchByNameShort(List<Station> stations, String searchedName) {
         System.out.println("Binary search for: " + searchedName);
@@ -129,7 +156,7 @@ public class Station implements Comparable<Station> {
         assert searchedName != null : "searchName is null";
         assert stations != null : "stationNames is null";
         assert !stations.isEmpty() : "stationNames is empty";
-        assert stations.get(0).getNameLong().compareToIgnoreCase(stations.get(stations.size() - 1).getNameLong()) < 0 : "stationNames is not sorted alphabetically";
+        assert stations.get(0).getSlug().compareToIgnoreCase(stations.get(stations.size() - 1).getSlug()) < 0 : "stationNames is not sorted alphabetically";
 
         int left = 0;
         int right = stations.size() - 1;
@@ -158,8 +185,74 @@ public class Station implements Comparable<Station> {
         return null; // Station not found
     }
 
+    // binary search stations by name. this is an 0(log n) algorithm
+    public static int binarySearchByNameShortSinglyLinkedList(SinglyLinkedList<Station> stations, String searchedName, boolean b) {
+        System.out.println("Binary search for: " + searchedName);
+        // preconditions: searchName is not null and stationNames is sorted alphabetically
+        assert searchedName != null : "searchedName cannot null";
+        assert stations != null : "stations singly-linked-list is null";
+        assert !stations.isEmpty() : "stations singly-linked-list is empty";
+        assert stations.get(0).getNameShort().compareToIgnoreCase(stations.get(stations.size() - 1).getNameShort()) < 0 : "stations singly-linked-list is not sorted alphabetically";
+
+        if (!b) {
+            // sort stations by code
+            sortByCode(stations);
+        }
+
+        long startTime = System.nanoTime();
+
+        int left = 0;
+        int right = stations.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            Station midStation = stations.get(mid);
+
+            int comparison;
+            if (b) {
+                comparison = searchedName.compareTo(midStation.getNameShort());
+            } else {
+                comparison = searchedName.compareTo(midStation.getCode());
+            }
+
+            if (comparison == 0) {
+                long endTime = System.nanoTime();
+                System.out.println("Execution time binary search in nanoseconds: " + (endTime - startTime));
+                System.out.println("Found station at index " + mid + ".");
+                return mid; // Found the station
+            } else if (comparison < 0) {
+                right = mid - 1; // Search in the left half
+            } else {
+                left = mid + 1; // Search in the right half
+            }
+        }
+
+        long endTime = System.nanoTime();
+        System.out.println("Execution time binary search in nanoseconds: " + (endTime - startTime));
+        System.out.println("Station not found");
+        return -1; // Station not found
+    }
+
+    // sort stations by name. this is an 0(n log n) algorithm
+    public static void sortByNameShort(SinglyLinkedList<Station> stations) {
+        System.out.println("Sorting stations by name");
+        stations.sort(Station::compareTo);
+    }
+
+    // sort stations by code. this is an 0(n log n) algorithm
+    public static void sortByCode(SinglyLinkedList<Station> stations) {
+        System.out.println("Sorting stations by code");
+        stations.sort(Station::compareByCode);
+    }
+
+
+
     @Override
     public int compareTo(Station o) {
         return this.getNameShort().compareTo(o.getNameShort());
+    }
+
+    public int compareByCode(Station o) {
+        return this.getCode().compareTo(o.getCode());
     }
 }

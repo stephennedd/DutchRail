@@ -26,6 +26,7 @@ public class CustomButton extends JButton {
             @Override
             public void mouseEntered(MouseEvent e) {
                 setBackground(new Color(0x0056BB));
+                setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
             @Override

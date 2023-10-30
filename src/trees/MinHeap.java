@@ -1,41 +1,54 @@
 package trees;
 
-import java.util.Comparator;
+import utils.TreeUtils;
 
 public class MinHeap<T extends Comparable<T>> {
 
     private T[] heap;
     private int size;
-    private int initialSize;
+    private int capacity;
 
 
-    public MinHeap(Class<T> clazz, int initialSize) {
-        this.heap = (T[]) java.lang.reflect.Array.newInstance(clazz, initialSize);
-        size = 0;
-        this.initialSize = initialSize;
-    }
-
-    public static MinHeap<String> createStringHeap(int initialSize) {
-        return new MinHeap<>(String.class, initialSize );
+    @SuppressWarnings("unchecked") // This will stop the compiler from complaining about the cast
+    public MinHeap(int capacity) {
+        //this.heap = (T[]) java.lang.reflect.Array.newInstance(clazz, initialSize);
+        this.size = 0;
+        this.capacity = capacity;
+        this.heap = (T[]) new Comparable[capacity];
     }
     
     public void push(T data) {
-        if (size==this.heap.length) {
+        if (size >= capacity) {
             remap();
+            //throw new RuntimeException("Heap is full");
         }
-        this.heap[size] = data;
-        percolateUp(size);
+
+        heap[size] = data;
         size++;
+
+        // maintain heap property by moving the new element to the correct position
+        int current = size - 1;
+        while (current > 0 && data.compareTo(heap[parent(current)]) < 0) {
+            swap(current, parent(current));
+            current = parent(current);
+        }
     }
 
     public T pop() {
         if (isEmpty()) {
             return null;
         }
+
+        if (size == 1) {
+            size--;
+            return heap[0];
+        }
+
         T data = heap[0];
-        heap[0] = heap[size-1];
+        heap[0] = heap[size - 1];
         size--;
         percolateDown(0);
+
         return data;
     }
 
@@ -51,37 +64,57 @@ public class MinHeap<T extends Comparable<T>> {
     }
 
     public int size() {
-        return heap.length;
+        return size;
     }
 
-    public T[] getHeap() {
-        return heap;
+    public int capacity() {
+        return capacity;
     }
 
+    @SuppressWarnings("unchecked")
     public void remap() {
+        // create a new heap with double the capacity
+        capacity *= 2;
+        T[] newHeap = (T[]) new Comparable[capacity];
+        System.arraycopy(heap, 0, newHeap, 0, heap.length);
 
+        this.heap = newHeap;
     }
 
-    private void percolateUp(int size) {
-        int parent = (size-1)/2;
-        if (heap[parent].compareTo(heap[size]) > 0) {
-            T temp = heap[parent];
-            heap[parent] = heap[size];
-            heap[size] = temp;
-            percolateUp(parent);
+    private void percolateDown(int index) {
+        int left = leftChild(index);
+        int right = rightChild(index);
+        int smallest = index;
+
+        if (left < size && heap[left].compareTo(heap[smallest]) < 0) { // if left child is smaller than parent
+            smallest = left;
+        }
+        if (right < size && heap[right].compareTo(heap[smallest]) < 0) { // if right child is smaller than parent
+            smallest = right;
+        }
+
+        if (smallest != index) {
+            swap(index, smallest);
+            percolateDown(smallest);
         }
     }
 
-    private void percolateDown(int i) {
-
+    private void swap(int index, int smallest) {
+        T temp = heap[index];
+        heap[index] = heap[smallest];
+        heap[smallest] = temp;
+        percolateDown(smallest);
     }
 
-    public static void main(String[] args) {
-        MinHeap<String> heap = new MinHeap<>(String.class, 0);
-        heap.push("test");
-        heap.push("test2");
-        System.out.println(heap.peek());
+    private int parent(int index) {
+        return (index - 1) / 2;
     }
 
+    private int rightChild(int index) {
+        return 2 * index + 2;
+    }
 
+    private int leftChild(int index) {
+        return 2 * index + 1;
+    }
 }

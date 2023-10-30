@@ -1,5 +1,6 @@
 package utils;
 
+import lists.SinglyLinkedList;
 import model.Connection;
 import model.Station;
 
@@ -120,6 +121,42 @@ public class ReadCsvFile {
                 Station station = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type, geoLat, geoLng);
 
                 stationList.add(station);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return stationList;
+    }
+
+    public static SinglyLinkedList<Station> readStationsIntoSinglyLinkedList(String filename) {
+        // preconditions: filename is not null
+        assert filename != null : "filename is null";
+        SinglyLinkedList<Station> stationList = new SinglyLinkedList<>();
+
+        try (FileReader fileReader = new FileReader(filename);
+             CSVParser csvParser = CSVFormat.DEFAULT
+                     .withFirstRecordAsHeader() // Assuming the first row is the header
+                     .parse(fileReader)) {
+
+            for (CSVRecord record : csvParser) {
+                String id = record.get("id");
+                String code = record.get("code");
+                String uic = record.get("uic");
+                String nameShort = record.get("name_short");
+                String nameMedium = record.get("name_medium");
+                String nameLong = record.get("name_long");
+                String slug = record.get("slug");
+                String country = record.get("country");
+                String type = record.get("type");
+                String geoLat = record.get("geo_lat");
+                String geoLng = record.get("geo_lng");
+
+                // Create an instance of YourDataClass and populate it with the parsed data
+                Station station = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type, geoLat, geoLng);
+
+                stationList.append(station);
             }
 
         } catch (IOException e) {

@@ -74,16 +74,18 @@ class StationTest {
 
     @Test
     @DisplayName("Binary search on unsorted list should throw an assertion error")
-    void binarySearchUnsortedList() throws IOException {
-        List<Station> stations = ReadCsvFile.readStations("data/stations.csv");
+    void binarySearchUnsortedList() {
+        List<Station> stations = ReadCsvFile.readStationsWithValidation("data/stations.csv");
         // reverse the list
         List<Station> reversedStations = new ArrayList<>();
         for (int i = stations.size() - 1; i >= 0; i--) {
             reversedStations.add(stations.get(i));
         }
         AssertionError e = assertThrows(AssertionError.class, () -> {
-            Station.binarySearchByNameShort(stations, "Zaltbommel");
+            Station.binarySearchByNameShort(reversedStations, "Zaltbommel");
         });
+
+        assertEquals("stationNames is not sorted alphabetically", e.getMessage());
 
         // assert the error message is correct
         assertEquals("stationNames is not sorted alphabetically", e.getMessage());
