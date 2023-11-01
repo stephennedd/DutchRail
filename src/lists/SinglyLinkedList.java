@@ -1,6 +1,8 @@
 package lists;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class SinglyLinkedList<T> implements BasicList<T> {
 
@@ -117,6 +119,25 @@ public class SinglyLinkedList<T> implements BasicList<T> {
         return array;
     }
 
+    public ArrayList<T> toArrayList() {
+        ArrayList<T> arrayList = new ArrayList<>();
+        SinglyLinkedListNode<T> current = head;
+        while(current != null) {
+            arrayList.add(current.data);
+            current = current.next;
+        }
+        return arrayList;
+    }
+
+    public List<T> toList() {
+        List<T> list = new ArrayList<>();
+        SinglyLinkedListNode<T> current = head;
+        while(current != null) {
+            list.add(current.data);
+            current = current.next;
+        }
+        return list;
+    }
 
     public void sort(Comparator<T> comparator) {
         if (head == null || head.next == null) {

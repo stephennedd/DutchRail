@@ -3,9 +3,9 @@ package utils;
 import lists.DoublyLinkedList;
 import lists.DoublyLinkedListNode;
 import model.Connection;
+import model.Station;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 
 public class Sort {
 
@@ -135,6 +135,22 @@ public class Sort {
         merged.addAll(right);
 
         return merged;
+    }
+
+    public static Map<Station, Integer> sortMapByValue(Map<Station, Integer> unsortedMap) {
+        List<Map.Entry<Station, Integer>> list = new LinkedList<>(unsortedMap.entrySet());
+
+        // Sort the list based on the values (distances)
+        list.sort(Map.Entry.comparingByValue());
+
+        // Create a new LinkedHashMap to store the sorted map
+        Map<Station, Integer> sortedMap = new LinkedHashMap<>();
+
+        for (Map.Entry<Station, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
     }
 
 

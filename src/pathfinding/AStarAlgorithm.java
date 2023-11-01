@@ -1,4 +1,4 @@
-package utils;
+package pathfinding;
 
 import model.Connection;
 import model.Station;
@@ -75,17 +75,13 @@ public class AStarAlgorithm {
 
     public static void main(String[] args) {
         // Test the algorithm
-        List<Station> stations = new ArrayList<>();
-        List<Connection> connections = new ArrayList<>();
-
-        // read stations from csv file
-        stations = utils.ReadCsvFile.readStationsWithValidation("data/stations.csv");
-        connections = utils.ReadCsvFile.readConnections("data/tracks.csv");
+        List<Station> stations = utils.ReadCsvFile.readStationsWithValidation("data/stations.csv");
+        List<Connection> connections = utils.ReadCsvFile.readConnections("data/tracks.csv");
 
         AStarAlgorithm aStarAlgorithm = new AStarAlgorithm();
 
         String startCode = "AC";
-        String goalCode = "ASHD";
+        String goalCode = "WTV";
 
         List<Station> path = aStarAlgorithm.findShortestPath(stations, connections, startCode, goalCode);
 

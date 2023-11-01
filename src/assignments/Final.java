@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Final {
     private static final String STATIONS_FILE = "data/stations.csv";
@@ -27,6 +28,7 @@ public class Final {
 
         // Load the stations from the CSV file
         SinglyLinkedList<Station> stationList = utils.ReadCsvFile.readStationsIntoSinglyLinkedList(STATIONS_FILE);
+        ArrayList<Station> stations = stationList.toArrayList();
 
         routingPanel = new RoutingPanel(this, stationList);
         optionPanel = new OptionPanel(this);

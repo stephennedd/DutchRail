@@ -142,7 +142,7 @@ public class ReadCsvFile {
 
             for (CSVRecord record : csvParser) {
                 String id = record.get("id");
-                String code = record.get("code");
+                String code = record.get("code").toUpperCase();
                 String uic = record.get("uic");
                 String nameShort = record.get("name_short");
                 String nameMedium = record.get("name_medium");
@@ -206,8 +206,8 @@ public class ReadCsvFile {
             String[] parts = line.split(",");
 
             Connection connection = new Connection(
-                    parts[0],
-                    parts[1],
+                    parts[0].toUpperCase(),
+                    parts[1].toUpperCase(),
                     Integer.parseInt(parts[2]),
                     Integer.parseInt(parts[3]),
                     Integer.parseInt(parts[4])
@@ -216,4 +216,5 @@ public class ReadCsvFile {
         }
         return connections;
     }
+
 }

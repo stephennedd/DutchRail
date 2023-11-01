@@ -156,7 +156,7 @@ public class Station implements Comparable<Station> {
         assert searchedName != null : "searchName is null";
         assert stations != null : "stationNames is null";
         assert !stations.isEmpty() : "stationNames is empty";
-        assert stations.get(0).getSlug().compareToIgnoreCase(stations.get(stations.size() - 1).getSlug()) < 0 : "stationNames is not sorted alphabetically";
+        assert stations.get(0).getNameShort().compareToIgnoreCase(stations.get(stations.size() - 1).getNameShort()) < 0 : "stationNames is not sorted alphabetically";
 
         int left = 0;
         int right = stations.size() - 1;
@@ -186,7 +186,7 @@ public class Station implements Comparable<Station> {
     }
 
     // binary search stations by name. this is an 0(log n) algorithm
-    public static int binarySearchByNameShortSinglyLinkedList(SinglyLinkedList<Station> stations, String searchedName, boolean b) {
+    public static int binarySearchSinglyLinkedList(SinglyLinkedList<Station> stations, String searchedName, boolean b) {
         System.out.println("Binary search for: " + searchedName);
         // preconditions: searchName is not null and stationNames is sorted alphabetically
         assert searchedName != null : "searchedName cannot null";
@@ -196,6 +196,7 @@ public class Station implements Comparable<Station> {
 
         if (!b) {
             // sort stations by code
+
             sortByCode(stations);
         }
 
@@ -245,7 +246,14 @@ public class Station implements Comparable<Station> {
         stations.sort(Station::compareByCode);
     }
 
-
+    public static Station getStationByCode(List<Station> stations, String toStation) {
+        for (Station station : stations) {
+            if (station.getCode().equals(toStation)) {
+                return station;
+            }
+        }
+        return null; // Handle the case when the station is not found
+    }
 
     @Override
     public int compareTo(Station o) {

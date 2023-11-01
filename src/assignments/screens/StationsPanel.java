@@ -151,7 +151,7 @@ public class StationsPanel extends JPanel {
         }
 
         // search for station
-        int foundIndex = Station.binarySearchByNameShortSinglyLinkedList(stations, stationToSearch, searchBy == 0);
+        int foundIndex = Station.binarySearchSinglyLinkedList(stations, stationToSearch, searchBy == 0);
         if (foundIndex == -1) {
             JOptionPane.showMessageDialog(this, "Station not found");
         } else {

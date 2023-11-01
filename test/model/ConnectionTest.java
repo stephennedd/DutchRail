@@ -16,11 +16,11 @@ class ConnectionTest {
 
     @Test
     void testConnection() {
-        assertEquals("fromStation", connection.getFromStation());
-        assertEquals("toStation", connection.getToStation());
-        assertEquals(1, connection.getDistance());
-        assertEquals(2, connection.getNumber2());
-        assertEquals(3, connection.getNumber3());
+        assertEquals("fromStation", connection.fromStation);
+        assertEquals("toStation", connection.toStation);
+        assertEquals(1, connection.distanceInKm);
+        assertEquals(2, connection.distance2);
+        assertEquals(3, connection.number3);
     }
 
     @Test
