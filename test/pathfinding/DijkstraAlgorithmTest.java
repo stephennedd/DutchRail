@@ -1,17 +1,14 @@
 package pathfinding;
 
+import lists.HashTable;
 import model.Connection;
 import model.Station;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.ReadCsvFile;
-import utils.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import static model.Station.getStationByCode;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DijkstraAlgorithmTest {
@@ -30,26 +27,20 @@ class DijkstraAlgorithmTest {
     @Test
     public void testFindShortestPath() {
         String startCode = "HT";
-        Station startStation = getStationByCode(stations, startCode);
         String endStationCode = "WTV";
-        Station endStation = getStationByCode(stations, endStationCode);
 
-        if (startStation != null) {
-            Map<Station, Integer> distance = dijkstraAlgorithm.findShortestPath(stations, connections, startCode);
-            distance = Sort.sortMapByValue(distance);
+        if (startCode != null) {
+            ShortestPathResult shortestPath = dijkstraAlgorithm.findShortestPath(stations, connections, startCode, endStationCode);
 
-//            for (Station station : distance.keySet()) {
-//                System.out.println("distance from " + startStation.getCode() + " to " + station.getCode() + ": " + distance.get(station) + " km");
-//            };
-
-            int getDistance = distance.get(endStation);
-            if (getDistance == Integer.MAX_VALUE) {
-                System.out.println("No route found from " + startStation.getNameShort() + " to " + endStation.getNameShort() + ".");
-            } else {
-                System.out.println("Shortest route from " + startStation.getNameShort() + " to " + endStation.getNameShort() + " is " + getDistance + " km.");
+            if (shortestPath == null) {
+                fail("No route found.");
             }
 
-            assertEquals(67, getDistance);
+            List<Station> route = shortestPath.getRoute();
+            int totalDistance = shortestPath.getTotalDistance();
+
+            assertEquals(16, route.size());
+            assertEquals(67, totalDistance);
         }
 
     }

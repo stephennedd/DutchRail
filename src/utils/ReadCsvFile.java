@@ -54,43 +54,36 @@ public class ReadCsvFile {
         // preconditions: filename is not null
         assert filename != null : "filename is null";
 
-        ArrayList<Station> stations = new ArrayList<>();
-        ReadCsvFile reader = new ReadCsvFile(filename);
-        ArrayList<String> data = reader.read();
+        List<Station> stations = new ArrayList<>();
 
-        assert !data.isEmpty() : "data is empty";
+        try (FileReader fileReader = new FileReader(filename);
+            CSVParser csvParser = CSVFormat.DEFAULT
+                    .withFirstRecordAsHeader() // Assuming the first row is the header
+                    .parse(fileReader)) {
 
-        int expectedLength = 11;
-        for (String line : data) {
-            String[] parts = line.split(",");
-            assert parts.length == expectedLength : "parts length is not " + expectedLength;
-        }
+                for (CSVRecord record : csvParser) {
+                    String id = record.get("id");
+                    String code = record.get("code");
+                    String uic = record.get("uic");
+                    String nameShort = record.get("name_short");
+                    String nameMedium = record.get("name_medium");
+                    String nameLong = record.get("name_long");
+                    String slug = record.get("slug");
+                    String country = record.get("country");
+                    String type = record.get("type");
+                    String geoLat = record.get("geo_lat");
+                    String geoLng = record.get("geo_lng");
 
-        for (String line : data) {
-            String[] parts = line.split(",");
-            // strip the quotes from the parts
-            for (int i = 0; i < parts.length; i++) {
-                Pattern pattern = Pattern.compile("^\"(.*)\"$");
-                Matcher matcher = pattern.matcher(parts[i]);
-                if (matcher.find()) {
-                    parts[i] = matcher.group(1);
+                    // Create an instance of YourDataClass and populate it with the parsed data
+                    Station station = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type, Double.parseDouble(geoLat), Double.parseDouble( geoLng));
+
+                    stations.add(station);
                 }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            Station station = new Station(
-                    parts[0],
-                    parts[1],
-                    parts[2],
-                    parts[3],
-                    parts[4],
-                    parts[5],
-                    parts[6],
-                    parts[7],
-                    parts[8],
-                    parts[9],
-                    parts[10]
-            );
-            stations.add(station);
-        }
+
         return stations;
     }
 
@@ -118,7 +111,7 @@ public class ReadCsvFile {
                 String geoLng = record.get("geo_lng");
 
                 // Create an instance of YourDataClass and populate it with the parsed data
-                Station station = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type, geoLat, geoLng);
+                Station station = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type, Double.parseDouble(geoLat), Double.parseDouble( geoLng));
 
                 stationList.add(station);
             }
@@ -154,7 +147,7 @@ public class ReadCsvFile {
                 String geoLng = record.get("geo_lng");
 
                 // Create an instance of YourDataClass and populate it with the parsed data
-                Station station = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type, geoLat, geoLng);
+                Station station = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type,Double.parseDouble(geoLat),Double.parseDouble(geoLng));
 
                 stationList.append(station);
             }

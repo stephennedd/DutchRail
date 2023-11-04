@@ -6,15 +6,14 @@ import model.Connection;
 import model.Station;
 import pathfinding.AStarAlgorithm;
 import pathfinding.DijkstraAlgorithm;
+import pathfinding.ShortestPathResult;
 import utils.CustomButton;
 import utils.ReadCsvFile;
-import utils.Sort;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class RoutingPanel extends JPanel {
     SinglyLinkedList<Station> stationList;
@@ -39,7 +38,7 @@ public class RoutingPanel extends JPanel {
             toStationComboBox.addItem(stationList.get(i).getNameLong());
         }
 
-        JLabel titleLabel = new JLabel("Select Stations for Routing:");
+        JLabel titleLabel = new JLabel("Select Beginning and End Stations:");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setForeground(new Color(0x003082));
         gbc.gridx = 0;
@@ -49,12 +48,12 @@ public class RoutingPanel extends JPanel {
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = 1;
-        add(new JLabel("From Station:"), gbc);
+        add(new JLabel("Begin Station:"), gbc);
         gbc.gridx = 1;
         add(fromStationComboBox, gbc);
         gbc.gridx = 0;
         gbc.gridy = 2;
-        add(new JLabel("To Station:"), gbc);
+        add(new JLabel("End Station:"), gbc);
         gbc.gridx = 1;
         add(toStationComboBox, gbc);
         gbc.gridx = 0;
@@ -81,7 +80,7 @@ public class RoutingPanel extends JPanel {
                 return;
             }
             String result = findShortestRoute(fromStationObject, toStationObject);
-            JOptionPane.showMessageDialog(RoutingPanel.this, result);
+            JOptionPane.showMessageDialog(RoutingPanel.this, result, "Route", JOptionPane.INFORMATION_MESSAGE);
         });
 
 
@@ -89,7 +88,7 @@ public class RoutingPanel extends JPanel {
     }
 
     private String findShortestRoute(Station fromStation, Station toStation) {
-        String result = "";
+        String result = "Route:\n\n";
         List<Station> stations = stationList.toArrayList();
         ArrayList<Connection> connections = ReadCsvFile.readConnections("data/tracks.csv");
 
@@ -106,19 +105,27 @@ public class RoutingPanel extends JPanel {
         if (searchBy == 0) {
             // Implement Dijkstra's algorithm
             DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm();
-            Map<Station, Integer> distance = dijkstraAlgorithm.findShortestPath(stations, connections, fromStation.getCode());
+            ShortestPathResult shortestPath = dijkstraAlgorithm.findShortestPath(stations, connections, fromStation.getCode(), toStation.getCode());
 
-            int getDistance = distance.get(toStation);
-            if (getDistance == Integer.MAX_VALUE) {
-                result = "No route found from " + fromStation.getNameShort() + " to " + toStation.getNameShort() + ".";
-            } else {
-                result = "Shortest route from " + fromStation.getNameShort() + " to " + toStation.getNameShort() + " is " + getDistance + " km.";
+            if (shortestPath == null) {
+                return "No route found.";
             }
+
+            for (Station station : shortestPath.getRoute()) {
+                result += station.getNameLong() + "\n";
+            }
+
+            int totalDistance = shortestPath.getTotalDistance();
+            result += "\nTotal Distance: " + totalDistance + " km";
+            return result;
+
         }
 
         // If user selects A* algorithm, use A* algorithm
         if (searchBy == 1) {
             // Implement A* algorithm
+            AStarAlgorithm aStarAlgorithm = new AStarAlgorithm();
+
         }
 
         // Return a formatted string with route information.

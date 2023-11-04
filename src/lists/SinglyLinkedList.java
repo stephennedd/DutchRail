@@ -129,14 +129,20 @@ public class SinglyLinkedList<T> implements BasicList<T> {
         return arrayList;
     }
 
-    public List<T> toList() {
-        List<T> list = new ArrayList<>();
+    public SinglyLinkedList<T> reverseList() {
+        SinglyLinkedList<T> reversedList = new SinglyLinkedList<>();
         SinglyLinkedListNode<T> current = head;
         while(current != null) {
-            list.add(current.data);
+            reversedList.prepend(current.data);
             current = current.next;
         }
-        return list;
+        return reversedList;
+    }
+
+    private void prepend(T data) {
+        SinglyLinkedListNode<T> newNode = new SinglyLinkedListNode<>(data);
+        newNode.next = head;
+        head = newNode;
     }
 
     public void sort(Comparator<T> comparator) {

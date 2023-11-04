@@ -16,11 +16,11 @@ public class Station implements Comparable<Station> {
     private final String slug;
     private final String countryCode;
     private final String type;
-    private final String latitude;
-    private final String longitude;
+    private final Double latitude;
+    private final Double longitude;
 
 
-    public Station(String id, String code, String shortCode, String nameShort, String nameMedium, String nameLong, String slug, String countryCode, String type, String latitude, String longitude) {
+    public Station(String id, String code, String shortCode, String nameShort, String nameMedium, String nameLong, String slug, String countryCode, String type, Double latitude, Double longitude) {
         assert id != null;
         assert code != null;
         assert shortCode != null;
@@ -53,11 +53,11 @@ public class Station implements Comparable<Station> {
         return nameShort;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 

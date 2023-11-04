@@ -112,8 +112,6 @@ public class StationHashMap {
 
     public int getIndex(String key) {
         return Math.abs(key.hashCode()) % buckets.length;
-        // which strings will return the same integer?
-        // "Aa", "BB", "bB", "bb"
     }
 
     private void resize() {

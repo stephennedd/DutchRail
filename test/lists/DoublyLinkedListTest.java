@@ -62,9 +62,9 @@ class DoublyLinkedListTest {
         DoublyLinkedList<Station> list = new DoublyLinkedList<>();
         Comparator<Station> comparator = Comparator.comparing(Station::getNameShort);
         assertTrue(list.isEmpty());
-        Station station1 = new Station("1", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a");
-        Station station2 = new Station("2", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b");
-        Station station3 = new Station("3", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c");
+        Station station1 = new Station("1", "a", "a", "a", "a", "a", "a", "a", "a", 0.0, 0.0);
+        Station station2 = new Station("2", "b", "b", "b", "b", "b", "b", "b", "b", 0.0, 0.0);
+        Station station3 = new Station("3", "c", "c", "c", "c", "c", "c", "c", "c", 0.0, 0.0);
         list.addSorted(station1, comparator);
         list.addSorted(station2, comparator);
         list.addSorted(station3, comparator);
@@ -72,7 +72,7 @@ class DoublyLinkedListTest {
         assertTrue(list.contains(station1));
         assertTrue(list.contains(station2));
         assertTrue(list.contains(station3));
-        assertEquals("Nodes of doubly linked list: Station{id='1', code='a', shortCode='a', nameShort='a', nameMedium='a', nameLong='a', slug='a', countryCode='a', type='a', latitude='a', longitude='a'}, Station{id='2', code='b', shortCode='b', nameShort='b', nameMedium='b', nameLong='b', slug='b', countryCode='b', type='b', latitude='b', longitude='b'}, Station{id='3', code='c', shortCode='c', nameShort='c', nameMedium='c', nameLong='c', slug='c', countryCode='c', type='c', latitude='c', longitude='c'}, ", list.toString());
+        assertEquals("Nodes of doubly linked list: 1, a, a, a, a, a, a, a, a, 0.0, 0.0, 2, b, b, b, b, b, b, b, b, 0.0, 0.0, 3, c, c, c, c, c, c, c, c, 0.0, 0.0, ", list.toString());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package assignments;
 
+import assignments.screens.MapPanel;
 import assignments.screens.OptionPanel;
 import assignments.screens.RoutingPanel;
 import assignments.screens.StationsPanel;
@@ -19,11 +20,12 @@ public class Final {
     private final OptionPanel optionPanel;
     private final RoutingPanel routingPanel;
     private final StationsPanel stationsPanel;
+    private final MapPanel mapPanel;
 
     public Final() {
         frame = new JFrame("DutchRail Train Route Finder");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);
+        frame.setSize(1000, 800);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
 
         // Load the stations from the CSV file
@@ -33,6 +35,7 @@ public class Final {
         routingPanel = new RoutingPanel(this, stationList);
         optionPanel = new OptionPanel(this);
         stationsPanel = new StationsPanel(this, stationList);
+        mapPanel = new MapPanel(this);
 
         frame.add(optionPanel);
         frame.setVisible(true);
@@ -45,6 +48,7 @@ public class Final {
         stationsPanel.setVisible(false);
         optionPanel.setVisible(false);
         routingPanel.setVisible(true);
+        mapPanel.setVisible(false);
         frame.revalidate();
     }
 
@@ -55,6 +59,8 @@ public class Final {
         stationsPanel.setVisible(false);
         optionPanel.setVisible(true);
         routingPanel.setVisible(false);
+        mapPanel.setVisible(false);
+
         frame.revalidate();
     }
 
@@ -64,7 +70,19 @@ public class Final {
 
         optionPanel.setVisible(false);
         routingPanel.setVisible(false);
+        mapPanel.setVisible(false);
         stationsPanel.setVisible(true);
+        frame.revalidate();
+    }
+
+    // Show the map panel
+    public void showMapPanel() {
+        frame.add(mapPanel);
+
+        optionPanel.setVisible(false);
+        routingPanel.setVisible(false);
+        stationsPanel.setVisible(false);
+        mapPanel.setVisible(true);
         frame.revalidate();
     }
 

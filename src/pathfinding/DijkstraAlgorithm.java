@@ -1,5 +1,6 @@
 package pathfinding;
 
+import lists.HashTable;
 import model.Connection;
 import model.Station;
 import trees.MinHeap;
@@ -8,14 +9,15 @@ import java.util.*;
 import static model.Station.getStationByCode;
 
 public class DijkstraAlgorithm {
-    public Map<Station, Integer> findShortestPath(List<Station> stations, List<Connection> connections, String startPoint) {
+    public ShortestPathResult findShortestPath(List<Station> stations, List<Connection> connections, String startPoint, String endPoint) {
         MinHeap<Station> minHeap = new MinHeap<>(stations.size()); // Create a min heap with the size of the stations list
-        Map<Station, Integer> distance = new HashMap<>();
+        HashTable<Station, Integer> distance = new HashTable<>(); // Create a hash table to store the distances
+        HashTable<Station, Station> previousStation = new HashTable<>(); // Create a hash table to store the previous station
 
         Station start = getStationByCode(stations, startPoint); // Get the start station
 
         for (Station station : stations) {
-            distance.put(station, Integer.MAX_VALUE); // Set all distances to infinity when starting, which for the dijkstra algorithm means unreachable
+            distance.put(station, Integer.MAX_VALUE); // Set all distances to infinity when starting, in the dijkstra algorithm this means its unreachable
         }
         distance.put(start, 0); // Set the distance to the start station to 0
 
@@ -33,13 +35,45 @@ public class DijkstraAlgorithm {
                     if (neighbor != null) { // Check if the neighbor station exists
                         if (altDistance < distance.get(neighbor)) { // Check if the new distance is shorter than the current distance
                             distance.put(neighbor, altDistance); // Update the distance
+                            previousStation.put(neighbor, currentStation); // Update the previous station
                             minHeap.push(neighbor); // Add the neighbor to the min heap
                         }
                     }
                 }
             }
         }
-        return distance; // Return the distance map
+        // check if there is a path
+        if (distance.get(getStationByCode(stations, endPoint)) == Integer.MAX_VALUE) {
+            return null;
+        }
+
+        // Calculate the total distance
+        int totalDistance = 0;
+        Station currentStation = getStationByCode(stations, endPoint);
+
+        while (currentStation != null) {
+            Station previous = previousStation.get(currentStation);
+
+            if (previous != null) {
+                totalDistance += distance.get(currentStation) - distance.get(previous);
+            }
+
+            currentStation = previous;
+        }
+
+        // Create the route
+        List<Station> route = new ArrayList<>();
+        currentStation = getStationByCode(stations, endPoint);
+
+        while (currentStation != null) {
+            route.add(currentStation);
+            currentStation = previousStation.get(currentStation);
+        }
+
+        Collections.reverse(route);
+
+        // Create and return the result instance
+        return new ShortestPathResult(route, totalDistance);
     }
 
 

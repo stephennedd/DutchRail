@@ -23,6 +23,7 @@ public class OptionPanel extends JPanel {
         CustomButton shortestRouteButton = new CustomButton("Find Shortest Route");
         CustomButton minimumCostSpanningTreeButton = new CustomButton("Minimum Cost Spanning Tree");
         CustomButton stationsButton = new CustomButton("List of all stations");
+        CustomButton mapButton = new CustomButton("Map of all stations");
 
         JLabel imageLabel = new JLabel();
         ImageIcon icon = loadImageAndResize("data/image.png", 50, 20);
@@ -38,6 +39,8 @@ public class OptionPanel extends JPanel {
         add(minimumCostSpanningTreeButton, gbc);
         gbc.gridy++;
         add(stationsButton, gbc);
+        gbc.gridy++;
+        add(mapButton, gbc);
 
         shortestRouteButton.addActionListener(e -> {
             // Option 1: Find the shortest Route
@@ -51,6 +54,11 @@ public class OptionPanel extends JPanel {
         stationsButton.addActionListener(e -> {
             // Option 3: List of all stations
             application.showStationsPanel();
+        });
+
+        mapButton.addActionListener(e -> {
+            // Option 4: Map of all stations
+            application.showMapPanel();
         });
     }
 }

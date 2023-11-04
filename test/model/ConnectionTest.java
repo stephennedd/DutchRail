@@ -25,7 +25,7 @@ class ConnectionTest {
 
     @Test
     void testToString() {
-        assertEquals("Connection{fromStation toStation 1 2 3}", connection.toString());
+        assertEquals("Connection{fromStation - toStation, 1KM 2 3}", connection.toString());
     }
 
     @Test

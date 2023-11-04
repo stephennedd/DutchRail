@@ -28,17 +28,17 @@ public class StationHashMapTest
     @BeforeEach
     public void setUp() {
         stationMap = new StationHashMap();
-        station1 = new Station("227", "Aa", "8400388", "'t Harde", "'t Harde", "'t Harde", "t-harde", "NL", "stoptreinstation", "52.4091682", "5.893611");
-        station2 = new Station("8", "BB", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
-        station3 = new Station("1231", "bB", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
-        station4 = new Station("4235", "bb", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
-        station5 = new Station("23542", "EEE", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
-        station6 = new Station("412334", "FFF", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
-        station7 = new Station("2361", "GGG", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
-        station8 = new Station("14673", "HHH", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
-        station9 = new Station("34714", "III", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
-        station10 = new Station("5825", "JJJ", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
-        station11 = new Station("412334", "KKK", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", "50.7678", "6.091499");
+        station1 = new Station("227", "Aa", "8400388", "'t Harde", "'t Harde", "'t Harde", "t-harde", "NL", "stoptreinstation", 52.4091682, 5.893611);
+        station2 = new Station("8", "BB", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
+        station3 = new Station("1231", "bB", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
+        station4 = new Station("4235", "bb", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
+        station5 = new Station("23542", "EEE", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
+        station6 = new Station("412334", "FFF", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
+        station7 = new Station("2361", "GGG", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
+        station8 = new Station("14673", "HHH", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
+        station9 = new Station("34714", "III", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
+        station10 = new Station("5825", "JJJ", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
+        station11 = new Station("412334", "KKK", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
 
     }
 
@@ -71,7 +71,7 @@ public class StationHashMapTest
         assertEquals(station1, stationMap.get("Aa"));
 
         // Test updating the value for an existing key
-        Station updatedStation = new Station("227", "HDE", "8400388", "'t Harde", "'t Harde", "'t Harde", "t-harde", "NL", "stoptreinstation", "52.4091682", "5.893611");
+        Station updatedStation = new Station("227", "HDE", "8400388", "'t Harde", "'t Harde", "'t Harde", "t-harde", "NL", "stoptreinstation", 52.4091682, 5.893611);
         stationMap.put(updatedStation);
         assertEquals(updatedStation, stationMap.get("HDE"));
     }
@@ -143,7 +143,7 @@ public class StationHashMapTest
 
         // Add enough entries to trigger a remap
         for (int i = 0; i < 20; i++) {
-            emptyMap.put(new Station("Key" + i, "Code" + i, "ShortCode" + i, "NameShort" + i, "NameMedium" + i, "NameLong" + i, "Slug" + i, "CountryCode" + i, "Type" + i, "Latitude" + i, "Longitude" + i));
+            emptyMap.put(new Station("Key" + i, "Code" + i, "ShortCode" + i, "NameShort" + i, "NameMedium" + i, "NameLong" + i, "Slug" + i, "CountryCode" + i, "Type" + i, 0.0, 0.0 ));
         }
 
 
