@@ -69,6 +69,10 @@ public class Station implements Comparable<Station> {
         return slug;
     }
 
+    public String getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         return id + ", " + code + ", " + shortCode + ", " + nameShort + ", " + nameMedium + ", " + nameLong + ", " + slug + ", " + countryCode + ", " + type + ", " + latitude + ", " + longitude;

@@ -1,18 +1,27 @@
 package utils;
 
+import trees.MinHeap;
 import trees.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ToWebGraphViz<T> {
+public class ToWebGraphViz<T extends Comparable<T>> {
     private StringBuilder dot;
     private TreeNode<T> root;
+
+    private MinHeap<T> minHeap;
 
     public ToWebGraphViz(TreeNode<T> root) {
         this.root = root;
         dot = new StringBuilder();
         dot.append("digraph BinarySearchTree {\n");
+    }
+
+    public ToWebGraphViz(MinHeap<T> minHeap) {
+        this.minHeap = minHeap;
+        dot = new StringBuilder();
+        dot.append("digraph MinHeap {\n");
     }
 
     public String toDotString() {
@@ -40,4 +49,6 @@ public class ToWebGraphViz<T> {
             }
         }
     }
+
+
 }

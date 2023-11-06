@@ -159,4 +159,6 @@ public class StationsPanel extends JPanel {
             stationJList.setSelectedIndex(foundIndex);
         }
     }
+
+
 }

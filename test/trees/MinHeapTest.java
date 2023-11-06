@@ -2,8 +2,6 @@ package trees;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import trees.MinHeap;
-import utils.ToWebGraphViz;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,5 +75,26 @@ class MinHeapTest {
         assertEquals(20, integerHeap.size());
 
         assertEquals(0, integerHeap.pop());
+    }
+
+    @Test
+    public void testBuildHeap() {
+        Integer[] nums = {13, 21, 24, 65, 26, 31, 32, 16, 19, 68};
+        MinHeap<Integer> integerHeap = new MinHeap<>(nums.length);
+        integerHeap.buildHeap(nums);
+
+        assertEquals(13, integerHeap.peek());
+
+        integerHeap.push(14);
+        assertEquals(13, integerHeap.peek());
+    }
+
+    @Test
+    public void testMinHeapToDot() {
+        Integer[] nums = {13, 21, 24, 65, 26, 31, 32, 16, 19, 68};
+        MinHeap<Integer> integerHeap = new MinHeap<>(nums.length);
+        integerHeap.buildHeap(nums);
+
+        System.out.println(integerHeap.graphViz(nums));
     }
 }

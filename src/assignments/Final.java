@@ -35,7 +35,7 @@ public class Final {
         routingPanel = new RoutingPanel(this, stationList);
         optionPanel = new OptionPanel(this);
         stationsPanel = new StationsPanel(this, stationList);
-        mapPanel = new MapPanel(this);
+        mapPanel = new MapPanel(this, stationList);
 
         frame.add(optionPanel);
         frame.setVisible(true);

@@ -1,7 +1,5 @@
 package trees;
 
-import utils.TreeUtils;
-
 public class MinHeap<T extends Comparable<T>> {
 
     private T[] heap;
@@ -81,6 +79,32 @@ public class MinHeap<T extends Comparable<T>> {
         this.heap = newHeap;
     }
 
+    public void buildHeap(T[] array) {
+        this.heap = array;
+        this.size = array.length;
+
+        for (int i = size / 2 - 1; i >= 0; i--) {
+            percolateDown(i);
+        }
+    }
+
+    public String graphViz(T[] array) {
+        StringBuilder dotTree = new StringBuilder();
+        dotTree.append("digraph MinHeap {\n");
+
+        for (int i = 0; i < array.length; i++) {
+            dotTree.append("  ").append(i).append(" [label=\"").append(array[i]).append("\"];\n");
+
+            if (i > 0) {
+                int parentIndex = (i - 1) / 2;
+                dotTree.append("  ").append(parentIndex).append(" -> ").append(i).append(";\n");
+            }
+        }
+
+        dotTree.append("}\n");
+        return dotTree.toString();
+    }
+
     private void percolateDown(int index) {
         int left = leftChild(index);
         int right = rightChild(index);
@@ -117,4 +141,5 @@ public class MinHeap<T extends Comparable<T>> {
     private int leftChild(int index) {
         return 2 * index + 1;
     }
+
 }
