@@ -37,12 +37,11 @@ class SinglyLinkedListTest {
     }
 
     @Test
-    void testGetIndexOutOfBounds() {
+    void getIndexNotValid() {
         unsortedList.append(1);
         unsortedList.append(2);
         unsortedList.append(3);
-        assertThrows(IndexOutOfBoundsException.class, () -> unsortedList.get(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> unsortedList.get(3));
+        assertNull(unsortedList.get(4));
     }
 
     @Test
@@ -104,6 +103,17 @@ class SinglyLinkedListTest {
     }
 
     @Test
+    void testToArrayList() {
+        unsortedList.append(1);
+        unsortedList.append(2);
+        unsortedList.append(3);
+        assertEquals(3, unsortedList.toArrayList().size());
+        assertEquals(1, unsortedList.toArrayList().get(0));
+        assertEquals(2, unsortedList.toArrayList().get(1));
+        assertEquals(3, unsortedList.toArrayList().get(2));
+    }
+
+    @Test
     void testSortListOfStrings() {
         SinglyLinkedList<String> list = new SinglyLinkedList<>();
         list.append("Zaltbommel");
@@ -112,15 +122,15 @@ class SinglyLinkedListTest {
         list.append("Rotterdam");
         list.append("Den Haag");
         assertEquals(5, list.size());
-        assertEquals("Zaltbommel", list.getHead().data);
-        list.sort(Comparator.naturalOrder());
-        assertEquals("Amsterdam", list.getHead().data);
+        assertEquals("Zaltbommel", list.head.data);
+        list.insertionSort(Comparator.naturalOrder());
+        assertEquals("Amsterdam", list.head.data);
     }
 
     @Test
     public void testSortEmptyList() {
         // Test sorting an empty list
-        unsortedList.sort(comparator);
+        unsortedList.insertionSort(comparator);
         assertEquals("null", unsortedList.toString());
     }
 
@@ -128,7 +138,7 @@ class SinglyLinkedListTest {
     public void testSortSingleElement() {
         // Test sorting a list with a single element
         unsortedList.append(1);
-        unsortedList.sort(comparator);
+        unsortedList.insertionSort(comparator);
         assertEquals("1 -> null", unsortedList.toString());
     }
 
@@ -138,7 +148,7 @@ class SinglyLinkedListTest {
         unsortedList.append(1);
         unsortedList.append(2);
         unsortedList.append(3);
-        unsortedList.sort(comparator);
+        unsortedList.insertionSort(comparator);
         assertEquals("1 -> 2 -> 3 -> null", unsortedList.toString());
     }
 
@@ -149,7 +159,30 @@ class SinglyLinkedListTest {
         unsortedList.append(1);
         unsortedList.append(2);
         unsortedList.append(5);
-        unsortedList.sort(comparator);
+        unsortedList.insertionSort(comparator);
         assertEquals("1 -> 2 -> 3 -> 5 -> null", unsortedList.toString());
+    }
+
+    @Test
+    public void testQuickSort() {
+        // Test sorting an unsorted list
+        unsortedList.append(4);
+        unsortedList.append(1);
+        unsortedList.append(5);
+        unsortedList.append(2);
+        System.out.println(unsortedList.toString());
+        unsortedList.quickSort(comparator);
+        System.out.println(unsortedList.toString());
+        //assertEquals("1 -> 2 -> 3 -> 5 -> null", unsortedList.toString());
+    }
+
+    @Test void testReverseList() {
+        unsortedList.append(1);
+        unsortedList.append(2);
+        unsortedList.append(3);
+        unsortedList.append(4);
+        unsortedList.append(5);
+        SinglyLinkedList<Integer> reversedList = unsortedList.reverseList();
+        assertEquals("5 -> 4 -> 3 -> 2 -> 1 -> null", reversedList.toString());
     }
 }

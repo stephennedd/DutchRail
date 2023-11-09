@@ -1,6 +1,7 @@
 package utils;
 
 import lists.DoublyLinkedList;
+import lists.SinglyLinkedList;
 import model.Connection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SortTest {
     private DoublyLinkedList<Integer> unsortedList;
+    private SinglyLinkedList<Integer> unsortedSinglyList;
     private ArrayList<Connection> connections;
     private ReadCsvFile readCsvFile;
 
@@ -39,6 +41,8 @@ class SortTest {
     @Test
     void insertionSortDoublyLinkedListEmptyList() {
         DoublyLinkedList<Integer> sortedList = Sort.insertionSortDoublyLinkedList(new DoublyLinkedList<Integer>(), Integer::compareTo);
+
+        assert sortedList.isEmpty();
     }
 
     @Test

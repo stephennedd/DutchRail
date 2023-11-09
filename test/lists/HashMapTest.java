@@ -9,10 +9,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StationHashMapTest
+public class HashMapTest
 {
-
     private StationHashMap stationMap;
+    private HashTable<Integer,Integer> hashTable;
     private Station station1;
     private Station station2;
     private Station station3;
@@ -23,7 +23,6 @@ public class StationHashMapTest
     private Station station8;
     private Station station9;
     private Station station10;
-
     private Station station11;
     @BeforeEach
     public void setUp() {
@@ -40,6 +39,7 @@ public class StationHashMapTest
         station10 = new Station("5825", "JJJ", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
         station11 = new Station("412334", "KKK", "8015345", "Aachen", "Aachen Hbf", "Aachen Hbf", "aachen-hbf", "D", "knooppuntIntercitystation", 50.7678, 6.091499);
 
+        hashTable = new HashTable<>();
     }
 
     @Test
@@ -155,12 +155,12 @@ public class StationHashMapTest
     }
 
     @Test
-    public void testContainsKeyNullKey() {
+    void testContainsKeyNullKey() {
         assertThrows(AssertionError.class, () -> stationMap.containsKey(null));
     }
 
     @Test
-    public void testStationHashMap() throws IOException {
+    void testStationHashMap() throws IOException {
         List<Station> stations = ReadCsvFile.readStationsWithValidation("data/stations.csv");
         StationHashMap testMap = new StationHashMap();
 
@@ -173,11 +173,46 @@ public class StationHashMapTest
     }
 
     @Test
-    public void testGetIndex() {
+    void testGetIndex() {
         System.out.println(stationMap.getIndex("Aa"));
         System.out.println(stationMap.getIndex("BB"));
         System.out.println(stationMap.getIndex("bB"));
         System.out.println(stationMap.getIndex("bb"));
+    }
+
+    @Test
+    void testHashTableIsEmpty() {
+        assert hashTable.isEmpty();
+        assertEquals(0, hashTable.size());
+    }
+
+    @Test
+    void testHashTableRemoveInt() {
+        hashTable.put(1, 1);
+        hashTable.put(2, 2);
+        hashTable.put(3, 3);
+
+        assertEquals(3, hashTable.size());
+        assertTrue(hashTable.remove(2));
+        assertEquals(2, hashTable.size());
+        assertFalse(hashTable.remove(2));
+    }
+
+    @Test
+    void testHashTableContainsKey() {
+        hashTable.put(1, 1);
+        hashTable.put(2, 2);
+        hashTable.put(3, 3);
+
+        assertTrue(hashTable.containsKey(1));
+        assertTrue(hashTable.containsKey(2));
+        assertTrue(hashTable.containsKey(3));
+        assertFalse(hashTable.containsKey(4));
+    }
+
+    @Test
+    void testHashMapAreEquals() {
+
     }
 
 }

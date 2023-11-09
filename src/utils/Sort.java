@@ -2,6 +2,8 @@ package utils;
 
 import lists.DoublyLinkedList;
 import lists.DoublyLinkedListNode;
+import lists.SinglyLinkedList;
+import lists.SinglyLinkedListNode;
 import model.Connection;
 import model.Station;
 

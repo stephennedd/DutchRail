@@ -97,6 +97,15 @@ class DoublyLinkedListTest {
     }
 
     @Test
+    void removeValueThatIsNotInList() {
+        DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
+        list.append(1);
+        list.append(2);
+        list.append(3);
+        assertFalse(list.remove(4));
+    }
+
+    @Test
     void size() {
         DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
         list.append(1);

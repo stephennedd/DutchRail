@@ -27,6 +27,8 @@ public class HashTable<K, V> {
     }
 
     public void put(K key, V value) {
+        if (key == null) throw new IllegalArgumentException("Key cannot be null"); // Check if the key is null
+
         int index = getIndex(key); // Get the index of the bucket
         SinglyLinkedList<GenericEntry<K, V>> bucket = buckets[index]; // Get the bucket
         GenericEntry<K, V> entry = new GenericEntry<>(key, value); // Create a new entry
@@ -37,7 +39,7 @@ public class HashTable<K, V> {
         } else {
             for (int i = 0; i < bucket.size(); i++) { // Loop through the bucket
                 GenericEntry<K, V> currentEntry = bucket.get(i); // Get the current entry
-                if (currentEntry.key.equals(key)) { // Check if the current entry has the same key as the new entry
+                if (currentEntry.areEquals(key)) { // Check if the current entry has the same key as the new entry
                     currentEntry.value = value; // Update the value of the current entry
                     return;
                 }

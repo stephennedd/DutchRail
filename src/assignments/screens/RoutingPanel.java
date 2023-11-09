@@ -7,7 +7,7 @@ import model.Station;
 import pathfinding.AStarAlgorithm;
 import pathfinding.DijkstraAlgorithm;
 import pathfinding.ShortestPathResult;
-import utils.CustomButton;
+import utils.visuals.CustomButton;
 import utils.ReadCsvFile;
 
 import javax.swing.*;

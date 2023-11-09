@@ -1,4 +1,4 @@
-package utils;
+package utils.visuals;
 
 import javax.swing.border.Border;
 import java.awt.*;

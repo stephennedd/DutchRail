@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Final {
     private static final String STATIONS_FILE = "data/stations.csv";
@@ -28,9 +29,9 @@ public class Final {
         frame.setSize(1000, 800);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
 
-        // Load the stations from the CSV file
-        SinglyLinkedList<Station> stationList = utils.ReadCsvFile.readStationsIntoSinglyLinkedList(STATIONS_FILE);
-        ArrayList<Station> stations = stationList.toArrayList();
+        // Load the stations from the CSV file with regex to ensure the fields are split correctly
+        Pattern regex = Pattern.compile(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"); // Split on commas, but not commas inside quotes
+        SinglyLinkedList<Station> stationList = utils.ReadCsvFile.readStationsWithRegex(STATIONS_FILE, regex);
 
         routingPanel = new RoutingPanel(this, stationList);
         optionPanel = new OptionPanel(this);

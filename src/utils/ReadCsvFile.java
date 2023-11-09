@@ -10,7 +10,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.csv.CSVFormat;
@@ -49,9 +48,8 @@ public class ReadCsvFile {
         return data;
     }
 
-    // Read the stations from the file. complexity is 0(n)
+
     public static List<Station> readStations(String filename) {
-        // preconditions: filename is not null
         assert filename != null : "filename is null";
 
         List<Station> stations = new ArrayList<>();
@@ -87,8 +85,54 @@ public class ReadCsvFile {
         return stations;
     }
 
+
+    public static SinglyLinkedList<Station> readStationsWithRegex(String filename, Pattern regex) {
+        assert filename != null : "filename is null";
+
+        SinglyLinkedList<Station> stations = new SinglyLinkedList<>();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            String line;
+
+            // read the file line by line
+            while ((line = reader.readLine()) != null) {
+
+                String[] fields = RegexFilter.parseCSVLine(line, regex);
+
+                if (fields[0].equals("id")) { // skip the header
+                    continue;
+                } else if (fields.length != 11) { // check for invalid number of fields
+                    throw new RuntimeException("Invalid number of fields");
+                }
+
+                Station station = new Station( // create a new station
+                        fields[0],
+                        fields[1],
+                        fields[2],
+                        fields[3],
+                        fields[4],
+                        fields[5],
+                        fields[6],
+                        fields[7],
+                        fields[8],
+                        Double.parseDouble(fields[9]),
+                        Double.parseDouble(fields[10])
+                );
+
+
+                stations.append(station); // add the station to the list
+            }
+            reader.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return stations; // return the list of stations
+    }
+
+
     public static List<Station> readStationsWithValidation(String filename) {
-        // preconditions: filename is not null
         assert filename != null : "filename is null";
         List<Station> stationList = new ArrayList<>();
 
@@ -123,8 +167,8 @@ public class ReadCsvFile {
         return stationList;
     }
 
+
     public static SinglyLinkedList<Station> readStationsIntoSinglyLinkedList(String filename) {
-        // preconditions: filename is not null
         assert filename != null : "filename is null";
         SinglyLinkedList<Station> stationList = new SinglyLinkedList<>();
 
@@ -160,10 +204,8 @@ public class ReadCsvFile {
     }
 
 
-
     // sort the station names alphabetically. complexity is 0(n^2)
     public static List<Station> sortListByNameLong(List<Station> stations) {
-        // preconditions: stations is not null and not empty
         assert stations != null : "stations is null";
         assert !stations.isEmpty() : "stations is empty";
 
@@ -179,8 +221,8 @@ public class ReadCsvFile {
         return stations;
     }
 
+
     public static ArrayList<Connection> readConnections(String filename) {
-        // preconditions: filename is not null
         assert filename != null : "filename is null";
 
         ArrayList<Connection> connections = new ArrayList<>();
@@ -210,4 +252,51 @@ public class ReadCsvFile {
         return connections;
     }
 
+
+    public static ArrayList<Connection> readConnectionsWithRegex(String filename, Pattern regex) {
+        assert filename != null : "filename is null";
+
+        ArrayList<Connection> connections = new ArrayList<>();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            String line;
+
+            // read the file line by line
+            while ((line = reader.readLine()) != null) {
+
+                String[] fields = RegexFilter.parseCSVLine(line, regex);
+
+                if (fields.length != 5) { // check for invalid number of fields
+                    throw new RuntimeException("Invalid number of fields");
+                }
+
+                Connection connection = new Connection( // create a new connection
+                        fields[0].toUpperCase(),
+                        fields[1].toUpperCase(),
+                        Integer.parseInt(fields[2]),
+                        Integer.parseInt(fields[3]),
+                        Integer.parseInt(fields[4])
+                );
+
+
+                connections.add(connection); // add the connection to the list
+            }
+            reader.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return connections;
+    }
+
+
+    public static void main(String[] args) {
+        Pattern regex = Pattern.compile(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+        SinglyLinkedList<Station> stations = readStationsWithRegex("data/stations.csv", regex);
+        List<Connection> connections = readConnectionsWithRegex("data/tracks.csv", regex);
+
+        System.out.println(stations.size());
+        System.out.println(connections.size());
+    }
 }

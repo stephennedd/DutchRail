@@ -3,7 +3,7 @@ package assignments.screens;
 import assignments.Final;
 import lists.SinglyLinkedList;
 import model.Station;
-import utils.CustomButton;
+import utils.visuals.CustomButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +17,11 @@ public class StationsPanel extends JPanel {
     protected CustomButton SearchButton = new CustomButton("Linear Search");
     protected CustomButton BinarySearchButton = new CustomButton("Binary Search");
     private SinglyLinkedList<Station> stations;
+    protected String executionTime;
 
     public StationsPanel(Final application, SinglyLinkedList<Station> stationList) {
         stations = stationList;
-        setLayout(new FlowLayout(FlowLayout.CENTER, 10, 15));
+        setLayout(new FlowLayout());
         setBackground(new Color(0xFFC917));
 
         // create panel for buttons
@@ -31,14 +32,15 @@ public class StationsPanel extends JPanel {
         buttonPanel.add(SearchButton);
         buttonPanel.add(BinarySearchButton);
 
-        // add button panel to main panel
-        add(buttonPanel);
-
         // create and add title label
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         JLabel titleLabel = new JLabel("List of All Stations:");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setForeground(new Color(0x003082));
-        add(titleLabel);
+        titlePanel.setBackground(new Color(0xFFC917));
+        titlePanel.add(titleLabel);
+        add(titlePanel);
 
         // create panel for list
         JPanel listPanel = new JPanel();
@@ -57,9 +59,12 @@ public class StationsPanel extends JPanel {
         stationJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         stationJList.setLayoutOrientation(JList.VERTICAL);
         JScrollPane listScroller = new JScrollPane(stationJList);
-        listScroller.setPreferredSize(new Dimension(400, 230));
+        listScroller.setPreferredSize(new Dimension(900, 650));
         listPanel.add(listScroller);
         add(listPanel);
+
+        // add button panel to main panel
+        add(buttonPanel);
 
         // add methods to buttons
         backButton.addActionListener(e -> {
@@ -94,14 +99,19 @@ public class StationsPanel extends JPanel {
         }
 
         // search for station
-        int foundStation = Station.linearSearchByNameShortSinglyLinkedList(stations, stationToSearch, searchBy == 0);long endTime = System.nanoTime();
+        long startTime = System.nanoTime();
+        int foundStation = Station.linearSearchByNameShortSinglyLinkedList(stations, stationToSearch, searchBy == 0);
+        long endTime = System.nanoTime();
+        executionTime = String.valueOf((endTime - startTime) / 1000000.0); // convert to milliseconds
 
         if (foundStation == -1) {
-            JOptionPane.showMessageDialog(this, "Station not found");
+            JOptionPane.showMessageDialog(this, "Station not found", "Search", JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Station found at index " + foundStation);
+            JOptionPane.showMessageDialog(this, "Station found at index " + foundStation + " (" + executionTime + " ms)", "Search", JOptionPane.INFORMATION_MESSAGE);
             stationJList.setSelectedIndex(foundStation);
+            stationJList.ensureIndexIsVisible(foundStation);
         }
+        executionTime = "";
     }
 
     private void binarySearchStation() {
@@ -116,7 +126,9 @@ public class StationsPanel extends JPanel {
 
         if (searchBy == 1) {
             // sort the stations JList by code
-            stations.sort((o1, o2) -> o1.getCode().compareTo(o2.getCode()));
+            stations.insertionSort((o1, o2) -> o1.getCode().compareTo(o2.getCode()));
+
+            JOptionPane.showMessageDialog(this, "Stations sorted by code");
 
             // create vector for list
             Vector<Station> stationsSortedByCode = new Vector<>();
@@ -130,7 +142,9 @@ public class StationsPanel extends JPanel {
 
         if (searchBy == 0) {
             // sort the stations JList by name
-            stations.sort((o1, o2) -> o1.getNameShort().compareTo(o2.getNameShort()));
+            stations.insertionSort((o1, o2) -> o1.getNameShort().compareTo(o2.getNameShort()));
+
+            JOptionPane.showMessageDialog(this, "Stations sorted by name");
 
             // create vector for list
             Vector<Station> stationsSortedByName = new Vector<>();
@@ -151,13 +165,20 @@ public class StationsPanel extends JPanel {
         }
 
         // search for station
+        long startTime = System.nanoTime();
         int foundIndex = Station.binarySearchSinglyLinkedList(stations, stationToSearch, searchBy == 0);
+        long endTime = System.nanoTime();
+        executionTime = String.valueOf((endTime - startTime) / 1000000.0); // convert to milliseconds
+
         if (foundIndex == -1) {
-            JOptionPane.showMessageDialog(this, "Station not found");
+            JOptionPane.showMessageDialog(this, "Station not found", "Search", JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Station found at index " + foundIndex);
+            JOptionPane.showMessageDialog(this, "Station found at index " + foundIndex + " (" + executionTime + " ms)", "Search", JOptionPane.INFORMATION_MESSAGE);
             stationJList.setSelectedIndex(foundIndex);
+            stationJList.ensureIndexIsVisible(foundIndex);
         }
+
+        executionTime = "";
     }
 
 

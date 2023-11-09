@@ -84,7 +84,7 @@ public class DoublyLinkedList<T extends Comparable<T>>  implements BasicList<T>{
                     current = current.next;
                 }
                 if (current == null) { // if the value is NOT in the list
-                    return false; // value is NOT 'removed'
+                    return false;
                 } else { // if the value to be removed is found
                     if (current == tail) { // if the value is the last node
                         tail = tail.prev;

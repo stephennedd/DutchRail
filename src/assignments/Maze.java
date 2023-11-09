@@ -1,4 +1,4 @@
-package demos;
+package assignments;
 
 import java.awt.*;
 import java.util.Set;
@@ -8,8 +8,6 @@ import java.util.Stack;
 public class Maze {
 
     public static void main(String[] args) {
-        Maze maze = new Maze(MAZE1);
-        Maze maze1 = new Maze(MAZE2);
         solveMazes(new MazeSolver() {
             @Override
             public String getName() {
@@ -22,17 +20,17 @@ public class Maze {
             }
         });
 
-//        solveMazes(new MazeSolver() {
-//            @Override
-//            public String getName() {
-//                return "DepthFirstSearch";
-//            }
-//
-//            @Override
-//            public Maze solve(String[] map) {
-//                return depthFirstSearch(map);
-//            }
-//        });
+        solveMazes(new MazeSolver() {
+            @Override
+            public String getName() {
+                return "DepthFirstSearch";
+            }
+
+            @Override
+            public Maze solve(String[] map) {
+                return depthFirstSearch(map);
+            }
+        });
     }
 
     private static Maze breadthFirstSearch(String[] map) {
@@ -65,7 +63,23 @@ public class Maze {
         Stack<Step> toVisit = new Stack<>();
         Set<Point> visited = new java.util.HashSet<>();
         toVisit.add(new Step(null, maze.getStartPoint(), 0));
-
+        while (!toVisit.isEmpty()) {
+            Step next = toVisit.pop();
+            if (!visited.contains(next.point())) {
+                maze.setVisited(next.point());
+                if (next.point().equals(maze.getGoalPoint())) {
+                    maze.markPath(next);
+                    return maze;
+                }
+                visited.add(next.point());
+                for (Point neighbor : NEIGHBORS) {
+                    Point neighborPoint = new Point(next.point().x + neighbor.x, next.point().y + neighbor.y);
+                    if (maze.isValidAndFree(neighborPoint)) {
+                        toVisit.add(new Step(next, neighborPoint, next.cost() + 1));
+                    }
+                }
+            }
+        }
         return null;
 
     }

@@ -38,14 +38,14 @@ public class StationHashMap {
         int index = getIndex(key);
 
         SinglyLinkedList<StationEntry> bucket = buckets[index];
-        SinglyLinkedListNode<StationEntry> current = bucket.getHead();
+        SinglyLinkedListNode<StationEntry> current = bucket.head;
 
         while (current != null) {
             if (current.data.areEquals(key)) { // If the key already exists
-                current.data.station = station;
+                current.data.station = station; // Update the value
                 return;
             }
-            current = current.next;
+            current = current.next; // Move to the next node
         }
 
         bucket.append(new StationEntry(key, station));
@@ -59,7 +59,7 @@ public class StationHashMap {
 
         int index = getIndex(key);
         SinglyLinkedList<StationEntry> bucket = buckets[index];
-        SinglyLinkedListNode<StationEntry> current = bucket.getHead();
+        SinglyLinkedListNode<StationEntry> current = bucket.head;
 
         while (current != null) {
             if (current.data.areEquals(key)) {
@@ -78,13 +78,13 @@ public class StationHashMap {
 
         int index = getIndex(key);
         SinglyLinkedList<StationEntry> bucket = buckets[index];
-        SinglyLinkedListNode<StationEntry> current = bucket.getHead();
+        SinglyLinkedListNode<StationEntry> current = bucket.head;
         SinglyLinkedListNode<StationEntry> previous = null;
 
         while (current != null) {
             if (current.data.areEquals(key)) {
                 if (previous == null) { // If the node to remove is the head
-                    bucket.setHead(current.next);
+                    bucket.head = current.next;
                 } else { // If the node to remove is not the head
                     previous.next = current.next; // Remove the node
                 }
@@ -122,7 +122,7 @@ public class StationHashMap {
         }
 
         for (SinglyLinkedList<StationEntry> bucket : buckets) {
-            SinglyLinkedListNode<StationEntry> current = bucket.getHead();
+            SinglyLinkedListNode<StationEntry> current = bucket.head;
             while (current != null) {
                 int index = getIndex(current.data.key);
                 newBuckets[index].append(current.data);

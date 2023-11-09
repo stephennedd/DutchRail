@@ -2,20 +2,13 @@ package lists;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 public class SinglyLinkedList<T> implements BasicList<T> {
 
-    private SinglyLinkedListNode<T> head = null;
-    private SinglyLinkedListNode<T> tail = null;
+    public SinglyLinkedListNode<T> head = null;
+    public SinglyLinkedListNode<T> tail;
 
-    public SinglyLinkedListNode<T> getHead() {
-        return head;
-    }
 
-    public void setHead(SinglyLinkedListNode<T> next) {
-        head = next;
-    }
     @Override
     public boolean isEmpty() {
         return head == null;
@@ -44,12 +37,17 @@ public class SinglyLinkedList<T> implements BasicList<T> {
         return false;
     }
 
-    public T get(int index) {
+    public SinglyLinkedListNode<T> getTail(SinglyLinkedListNode<T> head) {
+        SinglyLinkedListNode<T> current = head;
+        while (current != null && current.next != null) {
+            current = current.next;
+        }
+        return current;
+    }
+
+    public T get(int index) { // get the value at index
         if (isEmpty()) {
             return null;
-        }
-        if(index < 0 || index >= size()) {
-            throw new IndexOutOfBoundsException();
         }
 
         SinglyLinkedListNode<T> current = head;
@@ -57,12 +55,12 @@ public class SinglyLinkedList<T> implements BasicList<T> {
 
         while(current != null) {
             if(count == index) {
-                return (T) current.data;
+                return current.data;
             }
             count++;
             current = current.next;
         }
-        return null;
+        return null; // return null if index is not found
     }
 
     public void append(T value) {
@@ -145,7 +143,7 @@ public class SinglyLinkedList<T> implements BasicList<T> {
         head = newNode;
     }
 
-    public void sort(Comparator<T> comparator) {
+    public void insertionSort(Comparator<T> comparator) { // sort using insertion sort
         if (head == null || head.next == null) {
             return; // No need to sort an empty list or a list with one element
         }
@@ -161,6 +159,50 @@ public class SinglyLinkedList<T> implements BasicList<T> {
 
         head = sorted; // Update the head to point to the sorted list
     }
+
+    public void quickSort(Comparator<T> comparator) {
+        if (head == null || head.next == null) {
+            return; // No need to sort an empty list or a list with one element
+        }
+
+        SinglyLinkedListNode<T> tail = getTail(head);
+        quickSortRecursive(head, tail, comparator);
+    }
+
+    private void quickSortRecursive(SinglyLinkedListNode<T> head, SinglyLinkedListNode<T> tail, Comparator<T> comparator) {
+        if (head == null || head == tail) {
+            return;
+        }
+
+        SinglyLinkedListNode<T> pivotPrev = partition(head, tail, comparator);
+        quickSortRecursive(head, pivotPrev, comparator);
+        quickSortRecursive(pivotPrev.next.next, tail, comparator);
+
+    }
+
+    private SinglyLinkedListNode<T> partition(SinglyLinkedListNode<T> start, SinglyLinkedListNode<T> end, Comparator<T> comparator) {
+        SinglyLinkedListNode<T> pivotPrev = start;
+        SinglyLinkedListNode<T> current = start;
+        T pivot = end.data;
+
+        while (start != end) {
+            if (comparator.compare(start.data, pivot) < 0) {
+                pivotPrev = current;
+                T temp = current.data;
+                current.data = start.data;
+                start.data = temp;
+                current = current.next;
+            }
+            start = start.next;
+        }
+
+        T temp = current.data;
+        current.data = pivot;
+        end.data = temp;
+
+        return pivotPrev;
+    }
+
 
     private SinglyLinkedListNode<T> insertSorted(SinglyLinkedListNode<T> sorted, SinglyLinkedListNode<T> newNode, Comparator<T> comparator) {
         if (sorted == null || comparator.compare(newNode.data, sorted.data) <= 0) { // If the new node is less than or equal to the first element, insert it before the current head.

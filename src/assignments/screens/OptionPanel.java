@@ -1,7 +1,7 @@
 package assignments.screens;
 
 import assignments.Final;
-import utils.CustomButton;
+import utils.visuals.CustomButton;
 
 import javax.swing.*;
 import java.awt.*;

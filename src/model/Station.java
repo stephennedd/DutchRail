@@ -241,13 +241,13 @@ public class Station implements Comparable<Station> {
     // sort stations by name. this is an 0(n log n) algorithm
     public static void sortByNameShort(SinglyLinkedList<Station> stations) {
         System.out.println("Sorting stations by name");
-        stations.sort(Station::compareTo);
+        stations.insertionSort(Station::compareTo);
     }
 
     // sort stations by code. this is an 0(n log n) algorithm
     public static void sortByCode(SinglyLinkedList<Station> stations) {
         System.out.println("Sorting stations by code");
-        stations.sort(Station::compareByCode);
+        stations.insertionSort(Station::compareByCode);
     }
 
     public static Station getStationByCode(List<Station> stations, String toStation) {

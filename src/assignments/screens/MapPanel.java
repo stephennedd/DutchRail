@@ -3,7 +3,7 @@ package assignments.screens;
 import assignments.Final;
 import lists.SinglyLinkedList;
 import model.Station;
-import utils.CustomButton;
+import utils.visuals.CustomButton;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -42,22 +42,22 @@ public class MapPanel extends JPanel {
         imageWidth = image.getWidth();
         imageHeight = image.getHeight();
 
-        setBackground(new java.awt.Color(255, 201, 23));
-        //setBackground(new java.awt.Color(Color.WHITE.getRGB()));
+        //setBackground(new java.awt.Color(255, 201, 23));
+        setBackground(new java.awt.Color(Color.WHITE.getRGB()));
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
         // create a panel for buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-        //buttonPanel.setBackground(new Color(Color.WHITE.getRGB()));
-        buttonPanel.setBackground(new Color(255, 201, 23));
+        buttonPanel.setBackground(new Color(Color.WHITE.getRGB()));
+        //buttonPanel.setBackground(new Color(255, 201, 23));
         buttonPanel.add(backButton);
         add(buttonPanel);
 
         // create and add title label
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JLabel titleLabel = new JLabel("Map of All Stations:");
+        JLabel titleLabel = new JLabel("Map of All Stations in the Netherlands:");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setForeground(new Color(0x003082));
         titlePanel.setBackground(new Color(Color.WHITE.getRGB()));
@@ -92,15 +92,15 @@ public class MapPanel extends JPanel {
         for (int i = 0; i < stations.size(); i++) {
             Station station = stations.get(i);
             Point stationPoint = geoToPixel(station.getLatitude(), station.getLongitude());
-            int radius = 6; // Adjust this radius for a larger hover area
+            int radius = 3; // Adjust this radius for a larger hover area
 
-            stationPoint.x += 350;
-            stationPoint.y += 20;
+            stationPoint.x += 355;
+            stationPoint.y += 25;
 
 
             if (coordinate.distance(stationPoint) <= radius) {
                 tooltipText = "Station: " + station.getNameShort();
-                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // change mouse pointer to hand
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR)); // change mouse pointer to crosshair
                 return;
             }
         }
@@ -131,14 +131,14 @@ public class MapPanel extends JPanel {
                 Station station = stations.get(i);
                 Point p = geoToPixel(station.getLatitude(), station.getLongitude());
                 if (station.getType().equals("knooppuntIntercitystation")) {
-                    g.setColor(Color.BLUE);
-                    g.fillOval(p.x + imageStartX, p.y + imageStartY, 7, 7);
+                    g.setColor(Color.GREEN);
+                    g.fillOval(p.x + imageStartX, p.y + imageStartY, 8, 8); // size of the knooppuntIntercitystations dot
                 } else if (station.getType().equals("megastation")) {
                     g.setColor(Color.BLUE);
-                    g.fillOval(p.x + imageStartX, p.y + imageStartY, 8, 8);
+                    g.fillOval(p.x + imageStartX, p.y + imageStartY, 10, 10); // size of the megastations dot
                 } else {
                     g.setColor(Color.RED);
-                    g.fillOval(p.x + imageStartX, p.y + imageStartY, 6, 6);
+                    g.fillOval(p.x + imageStartX, p.y + imageStartY, 5, 5); // size of the remaining stations dot
                 }
             }
 
