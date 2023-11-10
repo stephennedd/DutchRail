@@ -4,14 +4,16 @@ import assignments.Final;
 import lists.SinglyLinkedList;
 import model.Station;
 import utils.visuals.CustomButton;
+import utils.visuals.StationTableModel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.util.Vector;
 
 public class StationsPanel extends JPanel {
 
-    protected JList<Station> stationJList;
+    protected JTable stationJTable;
 
     protected CustomButton backButton = new CustomButton("Back");
     protected CustomButton SearchButton = new CustomButton("Linear Search");
@@ -21,7 +23,7 @@ public class StationsPanel extends JPanel {
 
     public StationsPanel(Final application, SinglyLinkedList<Station> stationList) {
         stations = stationList;
-        setLayout(new FlowLayout());
+        setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
         setBackground(new Color(0xFFC917));
 
         // create panel for buttons
@@ -42,24 +44,68 @@ public class StationsPanel extends JPanel {
         titlePanel.add(titleLabel);
         add(titlePanel);
 
-        // create panel for list
+        // create panel for table
         JPanel listPanel = new JPanel();
         listPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         listPanel.setBackground(new Color(0xFFC917));
-        stationJList = new JList<>();
 
-        // create vector for list
-        Vector<Station> stationVector = new Vector<>();
-        for (int i = 0; i < stationList.size(); i++) {
-            stationVector.add(stationList.get(i));
-        }
+        // create table
+        StationTableModel model = new StationTableModel(stationList);
+        stationJTable = new JTable(model);
+        stationJTable.setRowHeight(20);
+        stationJTable.setFont(new Font("Arial", Font.PLAIN, 12));
+        stationJTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
+        stationJTable.getTableHeader().setForeground(new Color(0x003082));
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        // add vector to list
-        stationJList.setListData(stationVector);
-        stationJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        stationJList.setLayoutOrientation(JList.VERTICAL);
-        JScrollPane listScroller = new JScrollPane(stationJList);
-        listScroller.setPreferredSize(new Dimension(900, 650));
+        stationJTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        stationJTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        stationJTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        stationJTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        stationJTable.getColumnModel().getColumn(8).setCellRenderer(centerRenderer);
+
+        stationJTable.getColumn("#").setPreferredWidth(15);
+        stationJTable.getColumn("ID").setPreferredWidth(20);
+        stationJTable.getColumn("CODE").setPreferredWidth(35);
+        stationJTable.getColumn("UIC").setPreferredWidth(45);
+        stationJTable.getColumn("NAME-SH").setPreferredWidth(50);
+        stationJTable.getColumn("COUNTRY-CODE").setPreferredWidth(25);
+        stationJTable.getColumn("LATITUDE").setPreferredWidth(45);
+        stationJTable.getColumn("LONGITUDE").setPreferredWidth(45);
+        DefaultTableCellRenderer tooltipRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                           boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                if (column == 6) {
+                    setToolTipText(stationList.get(row).getNameLong());
+                } else if (column == 5) {
+                    setToolTipText(stationList.get(row).getNameMed());
+                } else if (column == 4) {
+                    setToolTipText(stationList.get(row).getNameShort());
+                } else if (column == 7) {
+                    setToolTipText(stationList.get(row).getSlug());
+                } else if (column == 9) {
+                    setToolTipText(stationList.get(row).getType());
+                }
+
+                return c;
+            }
+
+        };
+
+        stationJTable.getColumnModel().getColumn(4).setCellRenderer(tooltipRenderer);
+        stationJTable.getColumnModel().getColumn(5).setCellRenderer(tooltipRenderer);
+        stationJTable.getColumnModel().getColumn(6).setCellRenderer(tooltipRenderer);
+        stationJTable.getColumnModel().getColumn(7).setCellRenderer(tooltipRenderer);
+        stationJTable.getColumnModel().getColumn(9).setCellRenderer(tooltipRenderer);
+
+
+        // add table to scroll pane
+        JScrollPane listScroller = new JScrollPane(stationJTable);
+        listScroller.setPreferredSize(new Dimension(900, 500));
         listPanel.add(listScroller);
         add(listPanel);
 
@@ -108,8 +154,8 @@ public class StationsPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Station not found", "Search", JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Station found at index " + foundStation + " (" + executionTime + " ms)", "Search", JOptionPane.INFORMATION_MESSAGE);
-            stationJList.setSelectedIndex(foundStation);
-            stationJList.ensureIndexIsVisible(foundStation);
+            stationJTable.setRowSelectionInterval(foundStation, foundStation);
+            stationJTable.scrollRectToVisible(new Rectangle(stationJTable.getCellRect(foundStation, 0, true)));
         }
         executionTime = "";
     }
@@ -125,35 +171,20 @@ public class StationsPanel extends JPanel {
         }
 
         if (searchBy == 1) {
-            // sort the stations JList by code
+            // sort the stations JTable by code
             stations.insertionSort((o1, o2) -> o1.getCode().compareTo(o2.getCode()));
 
             JOptionPane.showMessageDialog(this, "Stations sorted by code");
 
-            // create vector for list
-            Vector<Station> stationsSortedByCode = new Vector<>();
-            for (int i = 0; i < stations.size(); i++) {
-                stationsSortedByCode.add(stations.get(i));
-            }
-
-            // add vector to list
-            stationJList.setListData(stationsSortedByCode);
+            stationJTable.setModel(new StationTableModel(stations));
         }
 
         if (searchBy == 0) {
             // sort the stations JList by name
             stations.insertionSort((o1, o2) -> o1.getNameShort().compareTo(o2.getNameShort()));
-
             JOptionPane.showMessageDialog(this, "Stations sorted by name");
 
-            // create vector for list
-            Vector<Station> stationsSortedByName = new Vector<>();
-            for (int i = 0; i < stations.size(); i++) {
-                stationsSortedByName.add(stations.get(i));
-            }
-
-            // add vector to list
-            stationJList.setListData(stationsSortedByName);
+            stationJTable.setModel(new StationTableModel(stations));
         }
 
         // ask user for station to search for
@@ -174,8 +205,8 @@ public class StationsPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Station not found", "Search", JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Station found at index " + foundIndex + " (" + executionTime + " ms)", "Search", JOptionPane.INFORMATION_MESSAGE);
-            stationJList.setSelectedIndex(foundIndex);
-            stationJList.ensureIndexIsVisible(foundIndex);
+            stationJTable.setRowSelectionInterval(foundIndex, foundIndex);
+            stationJTable.scrollRectToVisible(new Rectangle(stationJTable.getCellRect(foundIndex, 0, true)));
         }
 
         executionTime = "";

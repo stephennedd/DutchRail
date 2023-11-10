@@ -9,7 +9,7 @@ import java.util.List;
 public class Station implements Comparable<Station> {
     private final String id;
     private final String code;
-    private final String shortCode;
+    private final String uic;
     private final String nameShort;
     private final String nameMedium;
     private final String nameLong;
@@ -20,10 +20,10 @@ public class Station implements Comparable<Station> {
     private final Double longitude;
 
 
-    public Station(String id, String code, String shortCode, String nameShort, String nameMedium, String nameLong, String slug, String countryCode, String type, Double latitude, Double longitude) {
+    public Station(String id, String code, String uic, String nameShort, String nameMedium, String nameLong, String slug, String countryCode, String type, Double latitude, Double longitude) {
         assert id != null;
         assert code != null;
-        assert shortCode != null;
+        assert uic != null;
         assert nameShort != null;
         assert nameMedium != null;
         assert nameLong != null;
@@ -35,7 +35,7 @@ public class Station implements Comparable<Station> {
 
         this.id = id;
         this.code = code;
-        this.shortCode = shortCode;
+        this.uic = uic;
         this.nameShort = nameShort;
         this.nameMedium = nameMedium;
         this.nameLong = nameLong;
@@ -46,11 +46,23 @@ public class Station implements Comparable<Station> {
         this.longitude = longitude;
     }
 
-    public String getNameLong() {
-        return nameLong;
+    public String getId() {
+        return id;
+    }
+    public String getCode() {
+        return code;
+    }
+    public String getUic() {
+        return uic;
     }
     public String getNameShort() {
         return nameShort;
+    }
+    public String getNameMed() {
+        return nameMedium;
+    }
+    public String getNameLong() {
+        return nameLong;
     }
 
     public Double getLatitude() {
@@ -61,12 +73,12 @@ public class Station implements Comparable<Station> {
         return longitude;
     }
 
-    public String getCode() {
-        return code;
-    }
-
     public String getSlug() {
         return slug;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
     }
 
     public String getType() {
@@ -75,7 +87,7 @@ public class Station implements Comparable<Station> {
 
     @Override
     public String toString() {
-        return id + ", " + code + ", " + shortCode + ", " + nameShort + ", " + nameMedium + ", " + nameLong + ", " + slug + ", " + countryCode + ", " + type + ", " + latitude + ", " + longitude;
+        return id + ", " + code + ", " + uic + ", " + nameShort + ", " + nameMedium + ", " + nameLong + ", " + slug + ", " + countryCode + ", " + type + ", " + latitude + ", " + longitude;
     }
 
 

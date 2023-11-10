@@ -42,27 +42,28 @@ public class MapPanel extends JPanel {
         imageWidth = image.getWidth();
         imageHeight = image.getHeight();
 
-        //setBackground(new java.awt.Color(255, 201, 23));
-        setBackground(new java.awt.Color(Color.WHITE.getRGB()));
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setBackground(new java.awt.Color(255, 201, 23));
+        //setBackground(new java.awt.Color(Color.WHITE.getRGB()));
+        setLayout(new FlowLayout());
 
         // create a panel for buttons
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-        buttonPanel.setBackground(new Color(Color.WHITE.getRGB()));
-        //buttonPanel.setBackground(new Color(255, 201, 23));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        //buttonPanel.setBackground(new Color(Color.WHITE.getRGB()));
+        buttonPanel.setBackground(new Color(255, 201, 23));
         buttonPanel.add(backButton);
         add(buttonPanel);
 
         // create and add title label
         JPanel titlePanel = new JPanel();
-        titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        titlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         JLabel titleLabel = new JLabel("Map of All Stations in the Netherlands:");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setForeground(new Color(0x003082));
-        titlePanel.setBackground(new Color(Color.WHITE.getRGB()));
+        titlePanel.setBackground(new Color(255, 201, 23));
         titlePanel.add(titleLabel);
         add(titlePanel);
+
 
         // add action listener to back button
         backButton.addActionListener(e -> {
@@ -94,8 +95,8 @@ public class MapPanel extends JPanel {
             Point stationPoint = geoToPixel(station.getLatitude(), station.getLongitude());
             int radius = 3; // Adjust this radius for a larger hover area
 
-            stationPoint.x += 355;
-            stationPoint.y += 25;
+            stationPoint.x += 205;
+            stationPoint.y += 50;
 
 
             if (coordinate.distance(stationPoint) <= radius) {
@@ -122,8 +123,8 @@ public class MapPanel extends JPanel {
 
         if (image != null) {
 
-            int imageStartX = 350;
-            int imageStartY = 20;
+            int imageStartX = 200;
+            int imageStartY = 45;
             // Draw the image
             g.drawImage(image, imageStartX, imageStartY, this);
 

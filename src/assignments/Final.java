@@ -1,10 +1,8 @@
 package assignments;
 
-import assignments.screens.MapPanel;
-import assignments.screens.OptionPanel;
-import assignments.screens.RoutingPanel;
-import assignments.screens.StationsPanel;
+import assignments.screens.*;
 import lists.SinglyLinkedList;
+import model.Connection;
 import model.Station;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,14 +15,16 @@ import java.util.regex.Pattern;
 
 public class Final {
     private static final String STATIONS_FILE = "data/stations.csv";
+    private static final String TRACKS_FILE = "data/tracks.csv";
     private static JFrame frame;
     private final OptionPanel optionPanel;
     private final RoutingPanel routingPanel;
     private final StationsPanel stationsPanel;
     private final MapPanel mapPanel;
+    private final ConnectionsPanel connectionsPanel;
 
     public Final() {
-        frame = new JFrame("DutchRail Train Route Finder");
+        frame = new JFrame("DutchRail");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 800);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
@@ -32,11 +32,13 @@ public class Final {
         // Load the stations from the CSV file with regex to ensure the fields are split correctly
         Pattern regex = Pattern.compile(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"); // Split on commas, but not commas inside quotes
         SinglyLinkedList<Station> stationList = utils.ReadCsvFile.readStationsWithRegex(STATIONS_FILE, regex);
+        ArrayList<Connection> connectionList = utils.ReadCsvFile.readConnectionsWithRegex(TRACKS_FILE, regex);
 
         routingPanel = new RoutingPanel(this, stationList);
         optionPanel = new OptionPanel(this);
         stationsPanel = new StationsPanel(this, stationList);
         mapPanel = new MapPanel(this, stationList);
+        connectionsPanel = new ConnectionsPanel(this, connectionList);
 
         frame.add(optionPanel);
         frame.setVisible(true);
@@ -50,6 +52,8 @@ public class Final {
         optionPanel.setVisible(false);
         routingPanel.setVisible(true);
         mapPanel.setVisible(false);
+        connectionsPanel.setVisible(false);
+
         frame.revalidate();
     }
 
@@ -61,6 +65,7 @@ public class Final {
         optionPanel.setVisible(true);
         routingPanel.setVisible(false);
         mapPanel.setVisible(false);
+        connectionsPanel.setVisible(false);
 
         frame.revalidate();
     }
@@ -69,10 +74,12 @@ public class Final {
     public void showStationsPanel() {
         frame.add(stationsPanel);
 
+        stationsPanel.setVisible(true);
         optionPanel.setVisible(false);
         routingPanel.setVisible(false);
         mapPanel.setVisible(false);
-        stationsPanel.setVisible(true);
+        connectionsPanel.setVisible(false);
+
         frame.revalidate();
     }
 
@@ -80,10 +87,23 @@ public class Final {
     public void showMapPanel() {
         frame.add(mapPanel);
 
+        stationsPanel.setVisible(false);
         optionPanel.setVisible(false);
         routingPanel.setVisible(false);
-        stationsPanel.setVisible(false);
         mapPanel.setVisible(true);
+        connectionsPanel.setVisible(false);
+        frame.revalidate();
+    }
+
+    // Show the connections panel
+    public void showConnectionsPanel() {
+        frame.add(connectionsPanel);
+
+        stationsPanel.setVisible(false);
+        optionPanel.setVisible(false);
+        routingPanel.setVisible(false);
+        mapPanel.setVisible(false);
+        connectionsPanel.setVisible(true);
         frame.revalidate();
     }
 
