@@ -1,5 +1,6 @@
 package model;
 
+import lists.SinglyLinkedList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.ReadCsvFile;
@@ -89,6 +90,33 @@ class StationTest {
 
         // assert the error message is correct
         assertEquals("stationNames is not sorted alphabetically", e.getMessage());
+    }
+
+    @Test
+    void binarySearchSinglyLinkedList() {
+        SinglyLinkedList<Station> stations = new SinglyLinkedList<>();
+        stations.append(new Station("model", "model", "model", "model", "model", "model", "model", "model", "model", 0.0, 0.0));
+        stations.append(new Station("1", "1", "1", "1", "1", "1", "1", "1", "1", 0.0, 0.0));
+        int station = Station.binarySearchSinglyLinkedList(stations, "model", false);
+        assertEquals(1, station);
+    }
+
+    @Test
+    void linearSearchByNameShortSinglyLinkedList() {
+        SinglyLinkedList<Station> stations = new SinglyLinkedList<>();
+        stations.append(new Station("model", "model", "model", "model", "model", "model", "model", "model", "model", 0.0, 0.0));
+        stations.append(new Station("1", "1", "1", "1", "1", "1", "1", "1", "1", 0.0, 0.0));
+        int station = Station.linearSearchSinglyLinkedList(stations, "model", false);
+        assertEquals(0, station);
+    }
+
+    @Test
+    void linearSearchByNameShortSinglyLinkedListCode() {
+        SinglyLinkedList<Station> stations = new SinglyLinkedList<>();
+        stations.append(new Station("model", "model", "model", "model", "model", "model", "model", "model", "model", 0.0, 0.0));
+        stations.append(new Station("1", "1", "1", "1", "1", "1", "1", "1", "1", 0.0, 0.0));
+        int station = Station.linearSearchSinglyLinkedList(stations, "model", true);
+        assertEquals(0, station);
     }
 
     @Test
@@ -190,6 +218,13 @@ class StationTest {
         Station station = new Station("01", "ABC", "AB", "A", "B", "C", "D", "E", "F", 0.0, 0.0);
         Station station2 = new Station("01", "ABC", "AB", "A", "B", "C", "D", "E", "F", 0.0, 0.0);
         assertEquals(0, station.compareTo(station2));
+    }
+
+    @Test
+    void testCompareByCode() {
+        Station station = new Station("01", "ABC", "AB", "A", "B", "C", "D", "E", "F", 0.0, 0.0);
+        Station station2 = new Station("02", "ABC", "AB", "A", "B", "C", "D", "E", "F", 0.0, 0.0);
+        assertEquals(0, station.compareByCode(station2));
     }
 
 }

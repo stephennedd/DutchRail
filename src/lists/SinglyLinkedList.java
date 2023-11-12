@@ -2,12 +2,13 @@ package lists;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.function.Consumer;
 
-public class SinglyLinkedList<T> implements BasicList<T> {
+public class SinglyLinkedList<T> implements BasicList<T>, Iterable<T> {
 
     public SinglyLinkedListNode<T> head = null;
     public SinglyLinkedListNode<T> tail;
-
 
     @Override
     public boolean isEmpty() {
@@ -219,4 +220,34 @@ public class SinglyLinkedList<T> implements BasicList<T> {
         }
     }
 
+    private static class SinglyLinkedListIterator<T> implements Iterator<T> {
+        private SinglyLinkedListNode<T> current;
+
+        public SinglyLinkedListIterator(SinglyLinkedListNode<T> head) {
+            current = head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+
+            T data = current.data;
+            current = current.next;
+            return data;
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new SinglyLinkedListIterator<>(head);
+    }
+
+    @Override
+    public void forEach(Consumer<? super T> action) {
+        Iterable.super.forEach(action);
+    }
 }

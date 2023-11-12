@@ -1,19 +1,20 @@
 package assignments.screens;
 
 import assignments.Final;
+import graphs.TrainStationGraph;
+import graphs.TrainStationGraphNode;
+import graphs.pathfinding.DijkstraAlgorithm;
 import lists.SinglyLinkedList;
 import model.Connection;
 import model.Station;
-import pathfinding.AStarAlgorithm;
-import pathfinding.DijkstraAlgorithm;
-import pathfinding.ShortestPathResult;
+import graphs.pathfinding.AStarAlgorithm;
 import utils.visuals.CustomButton;
 import utils.ReadCsvFile;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RoutingPanel extends JPanel {
     SinglyLinkedList<Station> stationList;
@@ -88,9 +89,18 @@ public class RoutingPanel extends JPanel {
     }
 
     private String findShortestRoute(Station fromStation, Station toStation) {
-        String result = "Route:\n\n";
-        List<Station> stations = stationList.toArrayList();
+        StringBuilder result = new StringBuilder();
         ArrayList<Connection> connections = ReadCsvFile.readConnections("data/tracks.csv");
+
+        // Create graph and add vertices and edges
+        TrainStationGraph graph = new TrainStationGraph();
+        for (Station station: stationList) {
+            graph.addVertex(station);
+        }
+        graph.addAllEdges(connections);
+
+        // get startNode
+        TrainStationGraphNode startNode = graph.getNodeByStationCode(fromStation.getCode());
 
         // Ask user if they would like to use Dijkstra's algorithm or A* algorithm
         String[] options = {"Dijkstra's Algorithm", "A* Algorithm"};
@@ -103,32 +113,33 @@ public class RoutingPanel extends JPanel {
 
         // If user selects Dijkstra's algorithm, use Dijkstra's algorithm
         if (searchBy == 0) {
-            // Implement Dijkstra's algorithm
-            DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm();
-            ShortestPathResult shortestPath = dijkstraAlgorithm.findShortestPath(stations, connections, fromStation.getCode(), toStation.getCode());
-
-            if (shortestPath == null) {
-                return "No route found.";
+            Map<Station, Integer> shortestDistances = DijkstraAlgorithm.dijkstra(graph, startNode);
+            for (Map.Entry<Station, Integer> entry : shortestDistances.entrySet()) {
+                if (entry.getKey().getCode().equals(toStation.getCode())) {
+                    if (entry.getValue() == Integer.MAX_VALUE) {
+                        result.append("No path found.");
+                        break;
+                    }
+                    result.append("\tShortest distance from ").append(fromStation.getNameLong()).append(" to ").append(toStation.getNameLong()).append(" is ").append(entry.getValue()).append(" km.");
+                }
             }
-
-            for (Station station : shortestPath.getRoute()) {
-                result += station.getNameLong() + "\n";
-            }
-
-            int totalDistance = shortestPath.getTotalDistance();
-            result += "\nTotal Distance: " + totalDistance + " km";
-            return result;
-
         }
 
         // If user selects A* algorithm, use A* algorithm
         if (searchBy == 1) {
-            // Implement A* algorithm
-            AStarAlgorithm aStarAlgorithm = new AStarAlgorithm();
+            SinglyLinkedList<Station> shortestPath = AStarAlgorithm.aStar(graph, startNode, graph.getNodeByStationCode(toStation.getCode()));
+            if (shortestPath != null) {
+                result.append("Shortest path from ").append(fromStation.getNameLong()).append(" to ").append(toStation.getNameLong()).append(":\n");
+                for (Station station : shortestPath) {
+                    result.append("\t->").append(station.getNameLong()).append("\n");
+                }
+            } else {
+                result.append("No path found.");
+            }
 
         }
 
         // Return a formatted string with route information.
-        return result;
+        return result.toString();
     }
 }

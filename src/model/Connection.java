@@ -17,7 +17,7 @@ public class Connection implements Comparable<Connection> {
     }
 
     public String toString() {
-        return "FROM: " + fromStation + "  -  TO: " + toStation + "    DISTANCE: " + distanceInKm + "KM    " + distance2 + "     " + number3;
+        return "Connection{FROM: " + fromStation + "  -  TO: " + toStation + ", DISTANCE: " + distanceInKm + "KM, " + distance2 + ", " + number3+"}";
     }
 
     @Override

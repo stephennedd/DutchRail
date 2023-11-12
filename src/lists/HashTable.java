@@ -1,11 +1,12 @@
 package lists;
 
 public class HashTable<K, V> {
-    private final int INITIAL_SIZE = 16; // Initial size of the hash table
-    private final double LOAD_FACTOR = 0.75; // Factor to resize the hash table
+    private static final int INITIAL_SIZE = 16; // Initial size of the hash table
+    private static final double LOAD_FACTOR = 0.75; // Factor to resize the hash table
     private int size;
     private SinglyLinkedList<GenericEntry<K, V>> [] buckets; // SinglyLinkedList of buckets
 
+    @SuppressWarnings("unchecked")
     public HashTable() {
         buckets = new SinglyLinkedList[INITIAL_SIZE];
         for (int i = 0; i < INITIAL_SIZE; i++) {
@@ -36,10 +37,9 @@ public class HashTable<K, V> {
         if (bucket.isEmpty()) { // Check if the bucket is empty
             bucket.append(entry); // Add the entry to the bucket
             size++; // Increase the size
-        } else {
-            for (int i = 0; i < bucket.size(); i++) { // Loop through the bucket
-                GenericEntry<K, V> currentEntry = bucket.get(i); // Get the current entry
-                if (currentEntry.areEquals(key)) { // Check if the current entry has the same key as the new entry
+        } else { // If the bucket is not empty
+            for (GenericEntry<K, V> currentEntry : bucket) { // Loop through the bucket
+                if (currentEntry.key.equals(key)) { // Check if the current entry has the same key as the new entry
                     currentEntry.value = value; // Update the value of the current entry
                     return;
                 }
@@ -57,8 +57,7 @@ public class HashTable<K, V> {
         int index = getIndex(key); // Get the index of the bucket
         SinglyLinkedList<GenericEntry<K, V>> bucket = buckets[index]; // Get the bucket
 
-        for (int i = 0; i < bucket.size(); i++) { // Loop through the bucket
-            GenericEntry<K, V> entry = bucket.get(i); // Get the current entry
+        for (GenericEntry<K, V> entry : bucket) { // Loop through the bucket
             if (entry.key.equals(key)) { // Check if the current entry has the same key as the new entry
                 return entry.value; // Return the value of the current entry
             }
@@ -70,15 +69,13 @@ public class HashTable<K, V> {
         int index = getIndex(key); // Get the index of the bucket
         SinglyLinkedList<GenericEntry<K, V>> bucket = buckets[index]; // Get the bucket
 
-        for (int i = 0; i < bucket.size(); i++) { // Loop through the bucket
-            GenericEntry<K, V> entry = bucket.get(i); // Get the current entry
+        for (GenericEntry<K, V> entry : bucket) { // Loop through the bucket
             if (entry.key.equals(key)) { // Check if the current entry has the same key as the new entry
-                bucket.remove(entry); // Remove the entry from the bucket
+                bucket.remove(entry); // Remove the current entry
                 size--; // Decrease the size
                 return true;
             }
         }
-
         return false; // Return false if the key is not found
     }
 
@@ -95,6 +92,7 @@ public class HashTable<K, V> {
         return false; // Return false if the key is not found
     }
 
+    @SuppressWarnings("unchecked")
     private void resizeTable() {
         int newCapacity = buckets.length * 2;
         SinglyLinkedList<GenericEntry<K, V>>[] newTable = new SinglyLinkedList[newCapacity];
@@ -103,13 +101,11 @@ public class HashTable<K, V> {
             newTable[i] = new SinglyLinkedList<>();
         }
 
-        for (SinglyLinkedList<GenericEntry<K, V>> bucket : buckets) {
-            for (int i = 0; i < bucket.size(); i++) {
-                GenericEntry<K, V> entry = bucket.get(i);
-                int index = Math.abs(entry.key.hashCode()) % newCapacity;
-                newTable[index].append(entry);
+        for (SinglyLinkedList<GenericEntry<K, V>> bucket : buckets) { // Loop through the buckets
+            for (GenericEntry<K, V> entry : bucket) { // Loop through the entries
+                int index = Math.abs(entry.key.hashCode()) % newCapacity; // Get the index of the bucket
+                newTable[index].append(entry); // Add the entry to the bucket
             }
-
         }
 
         buckets = newTable;

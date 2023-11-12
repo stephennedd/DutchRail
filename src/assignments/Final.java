@@ -22,6 +22,7 @@ public class Final {
     private final StationsPanel stationsPanel;
     private final MapPanel mapPanel;
     private final ConnectionsPanel connectionsPanel;
+    private final MinSpanningTreePanel minSpanningTreePanel;
 
     public Final() {
         frame = new JFrame("DutchRail");
@@ -39,6 +40,7 @@ public class Final {
         stationsPanel = new StationsPanel(this, stationList);
         mapPanel = new MapPanel(this, stationList);
         connectionsPanel = new ConnectionsPanel(this, connectionList);
+        minSpanningTreePanel = new MinSpanningTreePanel(this, stationList);
 
         frame.add(optionPanel);
         frame.setVisible(true);
@@ -53,6 +55,7 @@ public class Final {
         routingPanel.setVisible(true);
         mapPanel.setVisible(false);
         connectionsPanel.setVisible(false);
+        minSpanningTreePanel.setVisible(false);
 
         frame.revalidate();
     }
@@ -66,6 +69,7 @@ public class Final {
         routingPanel.setVisible(false);
         mapPanel.setVisible(false);
         connectionsPanel.setVisible(false);
+        minSpanningTreePanel.setVisible(false);
 
         frame.revalidate();
     }
@@ -79,6 +83,7 @@ public class Final {
         routingPanel.setVisible(false);
         mapPanel.setVisible(false);
         connectionsPanel.setVisible(false);
+        minSpanningTreePanel.setVisible(false);
 
         frame.revalidate();
     }
@@ -92,6 +97,8 @@ public class Final {
         routingPanel.setVisible(false);
         mapPanel.setVisible(true);
         connectionsPanel.setVisible(false);
+        minSpanningTreePanel.setVisible(false);
+
         frame.revalidate();
     }
 
@@ -104,6 +111,21 @@ public class Final {
         routingPanel.setVisible(false);
         mapPanel.setVisible(false);
         connectionsPanel.setVisible(true);
+        minSpanningTreePanel.setVisible(false);
+
+        frame.revalidate();
+    }
+
+    // Show the minimum spanning tree panel
+    public void showMinSpanningTreePanel() {
+        frame.add(minSpanningTreePanel);
+
+        stationsPanel.setVisible(false);
+        optionPanel.setVisible(false);
+        routingPanel.setVisible(false);
+        mapPanel.setVisible(false);
+        connectionsPanel.setVisible(false);
+        minSpanningTreePanel.setVisible(true);
         frame.revalidate();
     }
 

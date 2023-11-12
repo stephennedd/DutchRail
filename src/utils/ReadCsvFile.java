@@ -168,42 +168,6 @@ public class ReadCsvFile {
     }
 
 
-    public static SinglyLinkedList<Station> readStationsIntoSinglyLinkedList(String filename) {
-        assert filename != null : "filename is null";
-        SinglyLinkedList<Station> stationList = new SinglyLinkedList<>();
-
-        try (FileReader fileReader = new FileReader(filename);
-             CSVParser csvParser = CSVFormat.DEFAULT
-                     .withFirstRecordAsHeader() // Assuming the first row is the header
-                     .parse(fileReader)) {
-
-            for (CSVRecord record : csvParser) {
-                String id = record.get("id");
-                String code = record.get("code").toUpperCase();
-                String uic = record.get("uic");
-                String nameShort = record.get("name_short");
-                String nameMedium = record.get("name_medium");
-                String nameLong = record.get("name_long");
-                String slug = record.get("slug");
-                String country = record.get("country");
-                String type = record.get("type");
-                String geoLat = record.get("geo_lat");
-                String geoLng = record.get("geo_lng");
-
-                // Create an instance of YourDataClass and populate it with the parsed data
-                Station station = new Station(id, code, uic, nameShort, nameMedium, nameLong, slug, country, type,Double.parseDouble(geoLat),Double.parseDouble(geoLng));
-
-                stationList.append(station);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return stationList;
-    }
-
-
     // sort the station names alphabetically. complexity is 0(n^2)
     public static List<Station> sortListByNameLong(List<Station> stations) {
         assert stations != null : "stations is null";
@@ -255,22 +219,18 @@ public class ReadCsvFile {
 
     public static ArrayList<Connection> readConnectionsWithRegex(String filename, Pattern regex) {
         assert filename != null : "filename is null";
-
         ArrayList<Connection> connections = new ArrayList<>();
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
-
             // read the file line by line
             while ((line = reader.readLine()) != null) {
 
                 String[] fields = RegexFilter.parseCSVLine(line, regex);
-
                 if (fields.length != 5) { // check for invalid number of fields
                     throw new RuntimeException("Invalid number of fields");
                 }
-
                 Connection connection = new Connection( // create a new connection
                         fields[0].toUpperCase(),
                         fields[1].toUpperCase(),
@@ -278,8 +238,6 @@ public class ReadCsvFile {
                         Integer.parseInt(fields[3]),
                         Integer.parseInt(fields[4])
                 );
-
-
                 connections.add(connection); // add the connection to the list
             }
             reader.close();
@@ -289,14 +247,14 @@ public class ReadCsvFile {
         return connections;
     }
 
+    public static Station getStationByCode(String searchedStationCode) {
+        SinglyLinkedList<Station> stations = readStationsWithRegex("data/stations.csv", Pattern.compile(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"));
 
-    public static void main(String[] args) {
-        Pattern regex = Pattern.compile(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
-        SinglyLinkedList<Station> stations = readStationsWithRegex("data/stations.csv", regex);
-        List<Connection> connections = readConnectionsWithRegex("data/tracks.csv", regex);
-
-        System.out.println(stations.size());
-        System.out.println(connections.size());
+        for (Station station : stations) {
+            if (station.getCode().equals(searchedStationCode)) {
+                return station;
+            }
+        }
+        return null; // station not found
     }
 }

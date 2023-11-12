@@ -26,16 +26,12 @@ public class ConnectionTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Connection connection = data.get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                return connection.fromStation;
-            case 1:
-                return connection.toStation;
-            case 2:
-                return connection.distanceInKm + "KM";
-            default:
-                return null;
-        }
+        return switch (columnIndex) {
+            case 0 -> connection.fromStation;
+            case 1 -> connection.toStation;
+            case 2 -> connection.distanceInKm + "KM";
+            default -> null;
+        };
     }
 
     @Override

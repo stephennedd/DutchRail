@@ -9,7 +9,6 @@ public class MinHeap<T extends Comparable<T>> {
 
     @SuppressWarnings("unchecked") // This will stop the compiler from complaining about the cast
     public MinHeap(int capacity) {
-        //this.heap = (T[]) java.lang.reflect.Array.newInstance(clazz, initialSize);
         this.size = 0;
         this.capacity = capacity;
         this.heap = (T[]) new Comparable[capacity];
@@ -18,7 +17,6 @@ public class MinHeap<T extends Comparable<T>> {
     public void push(T data) {
         if (size >= capacity) {
             remap();
-            //throw new RuntimeException("Heap is full");
         }
 
         heap[size] = data;

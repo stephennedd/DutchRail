@@ -6,7 +6,7 @@ public class StationHashMap {
     private static final int DEFAULT_CAPACITY = 16; // Default capacity of the map
     private static final double LOAD_FACTOR = 0.75; // Factor to determine when to resize the map
 
-    private SinglyLinkedList<StationEntry>[] buckets;
+    SinglyLinkedList<StationEntry>[] buckets;
     private int size;
 
     public StationHashMap() {

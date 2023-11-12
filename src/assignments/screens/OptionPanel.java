@@ -28,7 +28,7 @@ public class OptionPanel extends JPanel {
         CustomButton connectionsButton = new CustomButton("List of all Connections");
 
         JLabel imageLabel = new JLabel();
-        ImageIcon icon = loadImageAndResize("data/image.png", 200, 100);
+        ImageIcon icon = loadImageAndResize("data/images/logo.png", 200, 100);
         imageLabel.setIcon(icon);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -52,7 +52,8 @@ public class OptionPanel extends JPanel {
         });
 
         minimumCostSpanningTreeButton.addActionListener(e -> {
-            // TODO: Option 2: Minimum Cost Spanning Tree
+            // Option 2: Minimum Cost Spanning Tree
+            application.showMinSpanningTreePanel();
         });
 
         stationsButton.addActionListener(e -> {

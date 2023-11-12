@@ -9,11 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class AVLTreeTest {
 
     private AVLTree<Integer> integerTree;
+    private AVLTree<Integer> binarySearchTree;
+
 
     @BeforeEach
     void setUp() {
         integerTree = new AVLTree<>();
-
+        binarySearchTree = new AVLTree<>();
     }
 
     @Test
@@ -125,6 +127,29 @@ class AVLTreeTest {
         // Test adding a duplicate node
         tree.put(5);
         assertTrue(tree.contains(5));
+
+        // test removing a node with one child
+        tree.remove(5);
+        assertFalse(tree.contains(5));
+        assertTrue(tree.contains(20));
+
+        // test removing a node with two children
+        tree.put(10);
+        tree.put(5);
+        tree.put(15);
+        tree.put(25);
+        tree.put(30);
+        tree.put(35);
+        tree.put(40);
+        tree.put(45);
+        tree.put(50);
+        tree.put(55);
+        tree.put(60);
+        tree.put(65);
+
+        tree.remove(25);
+        assertFalse(tree.contains(25));
+        assertTrue(tree.contains(10));
     }
 
     @Test
@@ -212,5 +237,103 @@ class AVLTreeTest {
         String dot = generator.toDotString();
         //System.out.println(dot);
 
+    }
+
+    @Test
+    public void testDeleteLeafNode() {
+        binarySearchTree.put(5);
+        binarySearchTree.put(3);
+        binarySearchTree.put(7);
+
+        binarySearchTree.remove(3);
+        assertEquals(2, binarySearchTree.size());
+        assertFalse(binarySearchTree.contains(3));
+    }
+
+    @Test
+    public void testDeleteNodeWithOneChild() {
+        binarySearchTree.put(5);
+        binarySearchTree.put(3);
+        binarySearchTree.put(7);
+
+        binarySearchTree.remove(5);
+        assertEquals(2, binarySearchTree.size());
+        assertFalse(binarySearchTree.contains(5));
+    }
+
+    @Test
+    public void testDeleteNodeWithTwoChildren() {
+        binarySearchTree.put(5);
+        binarySearchTree.put(3);
+        binarySearchTree.put(7);
+        binarySearchTree.put(2);
+        binarySearchTree.put(4);
+
+        binarySearchTree.remove(3);
+        assertEquals(4, binarySearchTree.size());
+        assertFalse(binarySearchTree.contains(3));
+    }
+
+    @Test
+    public void testDeleteRootNode() {
+        binarySearchTree.put(5);
+        binarySearchTree.put(3);
+        binarySearchTree.put(7);
+
+        binarySearchTree.remove(5);
+        assertEquals(2, binarySearchTree.size());
+        assertFalse(binarySearchTree.contains(5));
+    }
+
+    @Test
+    public void testDeleteNodeInSkewedTree() {
+        binarySearchTree.put(1);
+        binarySearchTree.put(2);
+        binarySearchTree.put(3);
+
+        assertEquals(1, binarySearchTree.remove(1));
+        assertEquals(2, binarySearchTree.size());
+        assertFalse(binarySearchTree.contains(1));
+    }
+
+    @Test
+    public void testDeleteNodeInBalancedTree() {
+        binarySearchTree.put(2);
+        binarySearchTree.put(1);
+        binarySearchTree.put(3);
+
+        assertEquals(2, binarySearchTree.remove(2));
+        assertEquals(2, binarySearchTree.size());
+        assertFalse(binarySearchTree.contains(2));
+    }
+
+    @Test
+    public void testDeleteNodeWithOnlyLeftChild() {
+        binarySearchTree.put(2);
+        binarySearchTree.put(1);
+
+        binarySearchTree.remove(2);
+        assertEquals(1, binarySearchTree.size());
+        assertFalse(binarySearchTree.contains(2));
+    }
+
+    @Test
+    public void testDeleteNodeWithOnlyRightChild() {
+        binarySearchTree.put(1);
+        binarySearchTree.put(2);
+
+        binarySearchTree.remove(1);
+        assertEquals(1, binarySearchTree.size());
+        assertFalse(binarySearchTree.contains(1));
+    }
+
+    @Test
+    public void testDeleteNonExistingNode() {
+        binarySearchTree.put(5);
+        binarySearchTree.put(3);
+        binarySearchTree.put(7);
+
+        binarySearchTree.remove(10); // non-existing node
+        assertEquals(3, binarySearchTree.size());
     }
 }

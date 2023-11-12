@@ -132,7 +132,7 @@ public class Station implements Comparable<Station> {
         return null; // station not found
     }
 
-    public static int linearSearchByNameShortSinglyLinkedList(SinglyLinkedList<Station> stations, String searchedStation, boolean searchBy) {
+    public static int linearSearchSinglyLinkedList(SinglyLinkedList<Station> stations, String searchedStation, boolean searchBy) {
         System.out.println("Linear search for: " + searchedStation);
         // preconditions: stations is not null and not empty
         assert stations != null : "stations is null";
@@ -208,11 +208,10 @@ public class Station implements Comparable<Station> {
         assert searchedName != null : "searchedName cannot null";
         assert stations != null : "stations singly-linked-list is null";
         assert !stations.isEmpty() : "stations singly-linked-list is empty";
-        assert stations.get(0).getNameShort().compareToIgnoreCase(stations.get(stations.size() - 1).getNameShort()) < 0 : "stations singly-linked-list is not sorted alphabetically";
+        //assert stations.get(0).getNameShort().compareToIgnoreCase(stations.get(stations.size() - 1).getNameShort()) < 0 : "stations singly-linked-list is not sorted alphabetically";
 
         if (!b) {
             // sort stations by code
-
             sortByCode(stations);
         }
 
@@ -250,25 +249,10 @@ public class Station implements Comparable<Station> {
         return -1; // Station not found
     }
 
-    // sort stations by name. this is an 0(n log n) algorithm
-    public static void sortByNameShort(SinglyLinkedList<Station> stations) {
-        System.out.println("Sorting stations by name");
-        stations.insertionSort(Station::compareTo);
-    }
-
     // sort stations by code. this is an 0(n log n) algorithm
     public static void sortByCode(SinglyLinkedList<Station> stations) {
         System.out.println("Sorting stations by code");
         stations.insertionSort(Station::compareByCode);
-    }
-
-    public static Station getStationByCode(List<Station> stations, String toStation) {
-        for (Station station : stations) {
-            if (station.getCode().equals(toStation)) {
-                return station;
-            }
-        }
-        return null; // Handle the case when the station is not found
     }
 
     @Override

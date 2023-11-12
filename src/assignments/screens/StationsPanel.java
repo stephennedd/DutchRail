@@ -146,7 +146,7 @@ public class StationsPanel extends JPanel {
 
         // search for station
         long startTime = System.nanoTime();
-        int foundStation = Station.linearSearchByNameShortSinglyLinkedList(stations, stationToSearch, searchBy == 0);
+        int foundStation = Station.linearSearchSinglyLinkedList(stations, stationToSearch, searchBy == 0);
         long endTime = System.nanoTime();
         executionTime = String.valueOf((endTime - startTime) / 1000000.0); // convert to milliseconds
 

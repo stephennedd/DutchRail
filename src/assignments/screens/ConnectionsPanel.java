@@ -16,6 +16,8 @@ public class ConnectionsPanel extends JPanel {
     protected CustomButton backButton = new CustomButton("Back");
     protected CustomButton sortButton = new CustomButton("Sort Connections");
     protected JLabel executionTimeLabel;
+    protected DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    protected ConnectionTableModel model;
 
     public ConnectionsPanel(Final application, ArrayList<Connection> connections) {
         this.connections = connections;
@@ -62,7 +64,6 @@ public class ConnectionsPanel extends JPanel {
         connectionTable.setFont(new Font("Arial", Font.PLAIN, 13));
         connectionTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
         connectionTable.getTableHeader().setForeground(new Color(0x003082));
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         connectionTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         connectionTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
@@ -134,8 +135,12 @@ public class ConnectionsPanel extends JPanel {
         executionTimeLabel.setText("Sorting execution time: " + (endTime - startTime) + " nanoseconds");
         executionTimeLabel.setIcon(new ImageIcon("data/images/clock.png"));
 
+        model = new ConnectionTableModel(sortedConnections);
         // update the list
-        connectionTable.setModel(new ConnectionTableModel(sortedConnections));
+        connectionTable.setModel(model);
+        connectionTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        connectionTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        connectionTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
     }
 
     private void selectionSort(int sortBy) {
@@ -173,5 +178,9 @@ public class ConnectionsPanel extends JPanel {
         executionTimeLabel.setIcon(new ImageIcon("data/images/clock.png"));
         // update the list
         connectionTable.setModel(new ConnectionTableModel(sortedConnections));
+        connectionTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        connectionTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        connectionTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+
     }
 }

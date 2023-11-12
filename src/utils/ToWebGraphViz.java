@@ -18,11 +18,6 @@ public class ToWebGraphViz<T extends Comparable<T>> {
         dot.append("digraph BinarySearchTree {\n");
     }
 
-    public ToWebGraphViz(MinHeap<T> minHeap) {
-        this.minHeap = minHeap;
-        dot = new StringBuilder();
-        dot.append("digraph MinHeap {\n");
-    }
 
     public String toDotString() {
         List<String> lines = new ArrayList<>();

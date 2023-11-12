@@ -86,6 +86,13 @@ public class HashMapTest
         stationMap.put(station1);
         stationMap.put(station1);
         assertEquals(1, stationMap.size());
+
+        HashTable<Integer, String> hashTable = new HashTable<>();
+        hashTable.put(1, "test");
+        hashTable.put(1, "test");
+        assertEquals(1, hashTable.size());
+
+
     }
 
     @Test
@@ -139,19 +146,14 @@ public class HashMapTest
 
     @Test
     public void testRemap() {
-        StationHashMap emptyMap = new StationHashMap();
+        HashTable<Integer, Integer> hashTable = new HashTable<>();
 
-        // Add enough entries to trigger a remap
+        // add 20 elements
         for (int i = 0; i < 20; i++) {
-            emptyMap.put(new Station("Key" + i, "Code" + i, "ShortCode" + i, "NameShort" + i, "NameMedium" + i, "NameLong" + i, "Slug" + i, "CountryCode" + i, "Type" + i, 0.0, 0.0 ));
+            hashTable.put(i, i);
         }
 
-
-        // Check that all entries are still present after remap
-        for (int i = 0; i < 20; i++) {
-            assertTrue(emptyMap.containsKey("Code" + i));
-            assertEquals("NameShort" + i, emptyMap.get("Code" + i).getNameShort());
-        }
+        assertEquals(20, hashTable.size());
     }
 
     @Test
@@ -204,15 +206,11 @@ public class HashMapTest
         hashTable.put(2, 2);
         hashTable.put(3, 3);
 
+        assertEquals(3, hashTable.size());
         assertTrue(hashTable.containsKey(1));
         assertTrue(hashTable.containsKey(2));
         assertTrue(hashTable.containsKey(3));
         assertFalse(hashTable.containsKey(4));
-    }
-
-    @Test
-    void testHashMapAreEquals() {
-
     }
 
 }

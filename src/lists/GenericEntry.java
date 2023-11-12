@@ -9,7 +9,4 @@ public class GenericEntry<K, V> {
         this.value = value;
     }
 
-    public boolean areEquals(K other) {
-        return this.key.equals(other);
-    }
 }
